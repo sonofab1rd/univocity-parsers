@@ -15,6 +15,7 @@
  */
 package com.univocity.parsers.common;
 
+import com.univocity.parsers.common.record.Record;
 import com.univocity.parsers.common.record.*;
 
 /**
@@ -30,6 +31,8 @@ public class DefaultContext implements Context {
 	final int errorContentLength;
 	protected RecordFactory recordFactory;
 
+	private String[] headers;
+
 	public DefaultContext(int errorContentLength) {
 		this(null, errorContentLength);
 	}
@@ -42,13 +45,19 @@ public class DefaultContext implements Context {
 
 	@Override
 	public String[] headers() {
-		if (output == null) {
-			return ArgumentUtils.EMPTY_STRING_ARRAY;
+		if(headers == null) {
+			if (output == null) {
+				headers = ArgumentUtils.EMPTY_STRING_ARRAY;
+			}
+			headers = output.getHeaderAsStringArray();
 		}
-		return output.getHeaderAsStringArray();
+		return headers;
 	}
 
 	public String[] selectedHeaders() {
+		if(headers == null) {
+			headers();
+		}
 		int[] extractedFieldIndexes = extractedFieldIndexes();
 		if (extractedFieldIndexes != null) {
 			String[] extractedFields = new String[extractedFieldIndexes.length];

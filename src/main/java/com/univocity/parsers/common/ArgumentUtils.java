@@ -139,6 +139,24 @@ public class ArgumentUtils {
 	}
 
 	/**
+	 * Returns the index of a character in a given array.
+	 *
+	 * @param array   the character array
+	 * @param element the character to be looked for in the array.
+	 * @param from    the starting position of the array from where to start the search
+	 *
+	 * @return the index of the given character in the array, or -1 if the character could not be found.
+	 */
+	public static int indexOf(char[] array, char element, int from) {
+		for (int i = from; i < array.length; i++) {
+			if (array[i] == element) {
+				return i;
+			}
+		}
+		return -1;
+	}
+
+	/**
 	 * Returns the index of an element in a given array.
 	 *
 	 * @param array   the element array

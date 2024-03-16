@@ -1,5 +1,4 @@
-
-![thumbnail](./images/univocity-parsers.png)
+![thumbnail](./images/uniVocity-parsers.png)
 
 Welcome to univocity-parsers
 ============================
@@ -22,5 +21,11 @@ Fell free to submit your contribution via pull requests. Any little bit is appre
 For commercial support, customizations or anything in between, please contact support@univocity.com.
 
 **Thank you for using our parsers!**
+
+Please consider <a class="github-button" href="https://github.com/sponsors/jbax" data-icon="octicon-heart" aria-label="Sponsor @jbax on GitHub">sponsoring</a> our project or [![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=JKH3JNHLL4Y42&source=url) any amount via PayPal, or Bitcoin on the following address:
+
+ * 3BcmUPTPfLDuYWWSBxGKkChkq5WMzC94J6
+
+Thank you!
 
 The univocity team.

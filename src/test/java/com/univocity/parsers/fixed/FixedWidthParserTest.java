@@ -212,6 +212,30 @@ public class FixedWidthParserTest extends ParserTestCase {
 	}
 
 	@Test
+	public void testParsingWithoutRecordBreaksButTrailingSpaces() {
+		int[] length = new int[]{2, 2, 2, 2};
+		FixedWidthFields lengths = new FixedWidthFields(length);
+		FixedWidthParserSettings settings = new FixedWidthParserSettings(lengths);
+
+		FixedWidthParser parser = new FixedWidthParser(settings);
+		parser.beginParsing(new StringReader("abcdef  ghijkl  "));
+
+		String[] data;
+
+		data = parser.parseNext();
+		assertEquals(data[0], "ab");
+		assertEquals(data[1], "cd");
+		assertEquals(data[2], "ef");
+		assertEquals(data[3], null);
+
+		data = parser.parseNext();
+		assertEquals(data[0], "gh");
+		assertEquals(data[1], "ij");
+		assertEquals(data[2], "kl");
+		assertEquals(data[3], null);
+	}
+
+	@Test
 	public void testBitsAreNotDiscardedWhenParsing() {
 		FixedWidthFields lengths = new FixedWidthFields(3, 3);
 		FixedWidthParserSettings parserSettings = new FixedWidthParserSettings(lengths);
@@ -297,5 +321,30 @@ public class FixedWidthParserTest extends ParserTestCase {
 		assertEquals(line[0], "67");
 		assertEquals(line[1], "1234");
 
+	}
+
+	@Test
+	public void testSingleLineParsingWithLookAhead() {
+		FixedWidthFields fields1 = new FixedWidthFields();
+		fields1.addField(1).addField(5);
+
+		FixedWidthFields fields2 = new FixedWidthFields();
+		fields2.addField(1).addField(2).addField(3);
+
+		FixedWidthParserSettings s = new FixedWidthParserSettings();
+		s.addFormatForLookahead("1", fields1);
+		s.addFormatForLookahead("2", fields2);
+		FixedWidthParser p = new FixedWidthParser(s);
+
+		String[] line1 = p.parseLine("1ABCDE");
+		assertEquals(line1.length, 2);
+		assertEquals(line1[0], "1");
+		assertEquals(line1[1], "ABCDE");
+
+		String[] line2 = p.parseLine("2ABCDE");
+		assertEquals(line2.length, 3);
+		assertEquals(line2[0], "2");
+		assertEquals(line2[1], "AB");
+		assertEquals(line2[2], "CDE");
 	}
 }

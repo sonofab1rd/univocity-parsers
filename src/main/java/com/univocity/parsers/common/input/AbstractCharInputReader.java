@@ -471,7 +471,7 @@ public abstract class AbstractCharInputReader implements CharInputReader {
 
 		int pos = this.i - 1;
 		int len = i - this.i;
-		if (len > maxLength) { //validating before trailing whitespace handling so this behaves as an appender.
+		if (maxLength != -1 && len > maxLength) { //validating before trailing whitespace handling so this behaves as an appender.
 			return null;
 		}
 
@@ -479,7 +479,7 @@ public abstract class AbstractCharInputReader implements CharInputReader {
 
 		if (trim) {
 			i = i - 2;
-			while (buffer[i] <= ' ' && whitespaceRangeStart < buffer[i]) {
+			while (i >= 0 && buffer[i] <= ' ' && whitespaceRangeStart < buffer[i]) {
 				len--;
 				i--;
 			}
@@ -541,7 +541,7 @@ public abstract class AbstractCharInputReader implements CharInputReader {
 
 		int pos = this.i;
 		int len = i - this.i;
-		if (len > maxLength) { //validating before trailing whitespace handling so this behaves as an appender.
+		if (maxLength != -1 && len > maxLength) { //validating before trailing whitespace handling so this behaves as an appender.
 			return null;
 		}
 

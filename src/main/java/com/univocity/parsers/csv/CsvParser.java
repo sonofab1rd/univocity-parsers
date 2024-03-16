@@ -16,8 +16,8 @@
 package com.univocity.parsers.csv;
 
 import com.univocity.parsers.common.*;
-import com.univocity.parsers.common.input.*;
 import com.univocity.parsers.common.input.EOFException;
+import com.univocity.parsers.common.input.*;
 
 import java.io.*;
 
@@ -59,6 +59,7 @@ public final class CsvParser extends AbstractParser<CsvParserSettings> {
 	private final boolean trimQuotedTrailing;
 	private char[] delimiters;
 	private int match = 0;
+	private int formatDetectorRowSampleCount;
 
 	/**
 	 * The CsvParser supports all settings provided by {@link CsvParserSettings}, and requires this configuration to be properly initialized.
@@ -78,7 +79,7 @@ public final class CsvParser extends AbstractParser<CsvParserSettings> {
 		maxColumnLength = settings.getMaxCharsPerColumn();
 		trimQuotedTrailing = settings.getIgnoreTrailingWhitespacesInQuotes();
 		trimQuotedLeading = settings.getIgnoreLeadingWhitespacesInQuotes();
-
+		formatDetectorRowSampleCount = settings.getFormatDetectorRowSampleCount();
 		updateFormat(settings.getFormat());
 
 		whitespaceAppender = new ExpandingCharAppender(10, "", whitespaceRangeStart);
@@ -277,7 +278,7 @@ public final class CsvParser extends AbstractParser<CsvParserSettings> {
 				while ((pos = nextDelimiter()) != -1) {
 					lastPos = pos;
 					String value = output.appender.substring(0, pos);
-					if(keepQuotes && output.appender.charAt(pos-1) == quote){
+					if (keepQuotes && output.appender.charAt(pos - 1) == quote) {
 						value += quote;
 					}
 					output.valueParsed(value);
@@ -286,18 +287,18 @@ public final class CsvParser extends AbstractParser<CsvParserSettings> {
 						output.appender.remove(0, pos + 1);
 						continue;
 					}
-					if(multiDelimiter == null) {
+					if (multiDelimiter == null) {
 						output.appender.remove(0, pos + 1);
 					} else {
 						output.appender.remove(0, pos + multiDelimiter.length);
 					}
 				}
-				if(keepQuotes && input.lastIndexOf(quote) > lastPos){
+				if (keepQuotes && input.lastIndexOf(quote) > lastPos) {
 					output.appender.append(quote);
 				}
 				output.appender.append(ch);
 				prev = '\0';
-				if(multiDelimiter == null) {
+				if (multiDelimiter == null) {
 					parseQuotedValue();
 				} else {
 					parseQuotedValueMultiDelimiter();
@@ -308,7 +309,7 @@ public final class CsvParser extends AbstractParser<CsvParserSettings> {
 				output.appender.append(quote);
 				output.appender.append(ch);
 				prev = ch;
-				if(multiDelimiter == null) {
+				if (multiDelimiter == null) {
 					parseQuotedValue();
 				} else {
 					parseQuotedValueMultiDelimiter();
@@ -378,12 +379,12 @@ public final class CsvParser extends AbstractParser<CsvParserSettings> {
 			}
 			ch = input.nextChar();
 
-			if (trimQuotedLeading && ch <= ' ' && output.appender.length() == 0) {
+			if (trimQuotedLeading && (ch <= ' ' && ch != quote && ch != quoteEscape) && output.appender.length() == 0) {
 				while ((ch = input.nextChar()) <= ' ') ;
 			}
 
 			while (true) {
-				if (prev == quote && (ch <= ' ' && whitespaceRangeStart < ch || ch == delimiter || ch == newLine)) {
+				if (prev == quote && ((ch <= ' ' && ch != quote && ch != quoteEscape) && whitespaceRangeStart < ch || ch == delimiter || ch == newLine)) {
 					break;
 				}
 
@@ -429,7 +430,7 @@ public final class CsvParser extends AbstractParser<CsvParserSettings> {
 						}
 						return;
 					}
-				} while (ch <= ' ' && whitespaceRangeStart < ch);
+				} while (ch <= ' ' && whitespaceRangeStart < ch && ch != delimiter);
 
 				//there's more stuff after the quoted value, not only empty spaces.
 				if (ch != delimiter && parseUnescapedQuotes) {
@@ -463,9 +464,9 @@ public final class CsvParser extends AbstractParser<CsvParserSettings> {
 	@Override
 	protected final InputAnalysisProcess getInputAnalysisProcess() {
 		if (settings.isDelimiterDetectionEnabled() || settings.isQuoteDetectionEnabled()) {
-			return new CsvFormatDetector(20, settings, whitespaceRangeStart) {
+			return new CsvFormatDetector(formatDetectorRowSampleCount, settings, whitespaceRangeStart) {
 				@Override
-				void apply(char delimiter, char quote, char quoteEscape) {
+				protected void apply(char delimiter, char quote, char quoteEscape) {
 					if (settings.isDelimiterDetectionEnabled()) {
 						CsvParser.this.delimiter = delimiter;
 						CsvParser.this.delimiters[0] = delimiter;
@@ -704,8 +705,8 @@ public final class CsvParser extends AbstractParser<CsvParserSettings> {
 				if (prev == quote && (ch <= ' ' && whitespaceRangeStart < ch || ch == newLine)) {
 					break;
 				}
-				if (matchDelimiter()) {
-					if(keepQuotes){
+				if (prev == quote && matchDelimiter()) {
+					if (keepQuotes) {
 						output.appender.append(quote);
 					}
 					return;

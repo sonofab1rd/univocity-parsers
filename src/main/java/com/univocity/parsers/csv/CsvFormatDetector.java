@@ -15,6 +15,7 @@
  ******************************************************************************/
 package com.univocity.parsers.csv;
 
+import com.univocity.parsers.common.*;
 import com.univocity.parsers.common.input.*;
 
 import java.util.*;
@@ -25,7 +26,7 @@ import java.util.Map.*;
  *
  * @author Univocity Software Pty Ltd - <a href="mailto:parsers@univocity.com">parsers@univocity.com</a>
  */
-abstract class CsvFormatDetector implements InputAnalysisProcess {
+public abstract class CsvFormatDetector implements InputAnalysisProcess {
 
 	private final int MAX_ROW_SAMPLES;
 	private final char comment;
@@ -33,33 +34,42 @@ abstract class CsvFormatDetector implements InputAnalysisProcess {
 	private final char normalizedNewLine;
 	private final int whitespaceRangeStart;
 	private char[] allowedDelimiters;
+	private char[] delimiterPreference;
+	private final char suggestedQuote;
+	private final char suggestedQuoteEscape;
 
 	/**
 	 * Builds a new {@code CsvFormatDetector}
 	 *
 	 * @param maxRowSamples        the number of row samples to collect before analyzing the statistics
-	 * @param settings             the configuration provided by the user with potential defaults in case the detection is unable to discover the proper column delimiter or quote character.
+	 * @param settings             the configuration provided by the user with potential defaults in case the detection is unable to discover the proper column
+	 *                             delimiter or quote character.
 	 * @param whitespaceRangeStart starting range of characters considered to be whitespace.
 	 */
-	CsvFormatDetector(int maxRowSamples, CsvParserSettings settings, int whitespaceRangeStart) {
+	public CsvFormatDetector(int maxRowSamples, CsvParserSettings settings, int whitespaceRangeStart) {
 		this.MAX_ROW_SAMPLES = maxRowSamples;
 		this.whitespaceRangeStart = whitespaceRangeStart;
 		allowedDelimiters = settings.getDelimitersForDetection();
 
 		if (allowedDelimiters != null && allowedDelimiters.length > 0) {
 			suggestedDelimiter = allowedDelimiters[0];
+			delimiterPreference = allowedDelimiters.clone();
+			Arrays.sort(allowedDelimiters);
 		} else {
 			String delimiter = settings.getFormat().getDelimiterString();
 			suggestedDelimiter = delimiter.length() > 1 ? ',' : settings.getFormat().getDelimiter();
 			allowedDelimiters = new char[0];
+			delimiterPreference = allowedDelimiters;
 		}
 
 		normalizedNewLine = settings.getFormat().getNormalizedNewline();
 		comment = settings.getFormat().getComment();
+		suggestedQuote = settings.getFormat().getQuote();
+		suggestedQuoteEscape = settings.getFormat().getQuoteEscape();
 
 	}
 
-	private Map<Character, Integer> calculateTotals(List<Map<Character, Integer>> symbolsPerRow) {
+	protected Map<Character, Integer> calculateTotals(List<Map<Character, Integer>> symbolsPerRow) {
 		Map<Character, Integer> out = new HashMap<Character, Integer>();
 
 		for (Map<Character, Integer> rowStats : symbolsPerRow) {
@@ -80,7 +90,6 @@ abstract class CsvFormatDetector implements InputAnalysisProcess {
 
 	@Override
 	public void execute(char[] characters, int length) {
-
 		Set<Character> allSymbols = new HashSet<Character>();
 		Map<Character, Integer> symbols = new HashMap<Character, Integer>();
 		Map<Character, Integer> escape = new HashMap<Character, Integer>();
@@ -100,7 +109,7 @@ abstract class CsvFormatDetector implements InputAnalysisProcess {
 				while (++i < length) {
 					ch = characters[i];
 					if (ch == '\r' || ch == '\n' || ch == normalizedNewLine) {
-						if(ch == '\r' && i + 1 < characters.length && characters[i + 1] == '\n'){
+						if (ch == '\r' && i + 1 < characters.length && characters[i + 1] == '\n') {
 							i++;
 						}
 						break;
@@ -119,10 +128,10 @@ abstract class CsvFormatDetector implements InputAnalysisProcess {
 
 					if (i + 1 < length) {
 						char next = characters[i + 1];
-						if (Character.isLetterOrDigit(next) || (next <= ' ' && whitespaceRangeStart < next && next != '\n' && next != '\r')) { //no special characters after quote, might be escaping
+						if (Character.isLetterOrDigit(next) || (next <= ' ' && whitespaceRangeStart < next && next != '\n' && next != '\r' && next != '\t')) { //no special characters after quote, might be escaping
 							//special character before (potentially) closing quote, might be an escape
 							char prev = characters[i - 1];
-							if (!Character.isLetterOrDigit(prev)) {
+							if (!Character.isLetterOrDigit(prev) && prev != '\n' && prev != '\r') {
 								increment(escape, prev);
 							}
 						}
@@ -175,10 +184,10 @@ abstract class CsvFormatDetector implements InputAnalysisProcess {
 		Set<Character> toRemove = new HashSet<Character>();
 
 		//combines the number of symbols found in each row and sums the difference.
-		for (Map<Character, Integer> previous : symbolsPerRow) {
+		for (Map<Character, Integer> prev : symbolsPerRow) {
 			for (Map<Character, Integer> current : symbolsPerRow) {
 				for (Character symbol : allSymbols) {
-					Integer previousCount = previous.get(symbol);
+					Integer previousCount = prev.get(symbol);
 					Integer currentCount = current.get(symbol);
 
 					if (previousCount == null && currentCount == null) { // got a symbol that does not appear in all rows? Discard it.
@@ -194,6 +203,43 @@ abstract class CsvFormatDetector implements InputAnalysisProcess {
 			}
 		}
 
+		if (toRemove.size() == sums.size()) { //will discard all symbols. Stick with the symbols that showed up more consistently across all rows.
+			Map<Character, Integer> lineCount = new HashMap<Character, Integer>();
+			for (i = 0; i < symbolsPerRow.size(); i++) {
+				for (Character symbolInRow : symbolsPerRow.get(i).keySet()) {
+					Integer count = lineCount.get(symbolInRow);
+					if (count == null) {
+						count = 0;
+					}
+					lineCount.put(symbolInRow, count + 1);
+				}
+			}
+
+			Integer highestLineCount = null;
+			for (Map.Entry<Character, Integer> e : lineCount.entrySet()) {
+				if (highestLineCount == null || highestLineCount < e.getValue()) {
+					highestLineCount = e.getValue();
+				}
+			}
+
+			Character bestCandidate = null;
+			for (Map.Entry<Character, Integer> e : lineCount.entrySet()) {
+				if (e.getValue().equals(highestLineCount)) {
+					if (bestCandidate == null) {
+						bestCandidate = e.getKey();
+					} else {
+						// multiple characters can be the delimiter, unable to detect reliably.
+						bestCandidate = null;
+						break;
+					}
+				}
+			}
+
+			if (bestCandidate != null) {
+				toRemove.remove(bestCandidate);
+			}
+		}
+
 		sums.keySet().removeAll(toRemove);
 
 		if (allowedDelimiters.length > 0) {
@@ -204,8 +250,39 @@ abstract class CsvFormatDetector implements InputAnalysisProcess {
 			sums.keySet().retainAll(toRetain);
 		}
 
+		char delimiter = pickDelimiter(sums, totals);
+
+		char quote;
+		if (doubleQuoteCount == 0 && singleQuoteCount == 0) {
+			quote = suggestedQuote;
+		} else {
+			quote = doubleQuoteCount >= singleQuoteCount ? '"' : '\'';
+		}
+
+		escape.remove(delimiter);
+		char quoteEscape =doubleQuoteCount == 0 && singleQuoteCount == 0 ? suggestedQuoteEscape : max(escape, totals, quote);
+		apply(delimiter, quote, quoteEscape);
+	}
+
+	protected char pickDelimiter(Map<Character, Integer> sums, Map<Character, Integer> totals) {
 		char delimiterMax = max(sums, totals, suggestedDelimiter);
 		char delimiterMin = min(sums, totals, suggestedDelimiter);
+
+		if (delimiterMin == ' ' || delimiterMax == ' ') {
+			boolean hasOtherDelimiters = false;
+			for (Map.Entry<Character, Integer> e : sums.entrySet()) {
+				if (e.getValue() == 0 && e.getKey() != ' ') {
+					hasOtherDelimiters = true;
+					break;
+				}
+			}
+
+			if (hasOtherDelimiters) {
+				totals.remove(' ');
+				delimiterMax = max(sums, totals, suggestedDelimiter);
+				delimiterMin = min(sums, totals, suggestedDelimiter);
+			}
+		}
 
 		char delimiter;
 		out:
@@ -215,7 +292,7 @@ abstract class CsvFormatDetector implements InputAnalysisProcess {
 				break out;
 			}
 
-			for (char c : allowedDelimiters) {
+			for (char c : delimiterPreference) {
 				if (c == delimiterMin) {
 					delimiter = delimiterMin;
 					break out;
@@ -233,12 +310,7 @@ abstract class CsvFormatDetector implements InputAnalysisProcess {
 		} else {
 			delimiter = delimiterMax;
 		}
-
-		char quote = doubleQuoteCount >= singleQuoteCount ? '"' : '\'';
-
-		escape.remove(delimiter);
-		char quoteEscape = max(escape, totals, quote);
-		apply(delimiter, quote, quoteEscape);
+		return delimiter;
 	}
 
 	/**
@@ -247,7 +319,7 @@ abstract class CsvFormatDetector implements InputAnalysisProcess {
 	 * @param map    the map of characters and their numbers
 	 * @param symbol the character whose number should be increment
 	 */
-	private static void increment(Map<Character, Integer> map, char symbol) {
+	protected void increment(Map<Character, Integer> map, char symbol) {
 		increment(map, symbol, 1);
 	}
 
@@ -258,7 +330,7 @@ abstract class CsvFormatDetector implements InputAnalysisProcess {
 	 * @param symbol        the character whose number should be increment
 	 * @param incrementSize the size of the increment
 	 */
-	private static void increment(Map<Character, Integer> map, char symbol, int incrementSize) {
+	protected void increment(Map<Character, Integer> map, char symbol, int incrementSize) {
 		Integer count = map.get(symbol);
 		if (count == null) {
 			count = 0;
@@ -274,7 +346,7 @@ abstract class CsvFormatDetector implements InputAnalysisProcess {
 	 *
 	 * @return the character with the lowest number associated.
 	 */
-	private char min(Map<Character, Integer> map, Map<Character, Integer> totals, char defaultChar) {
+	protected char min(Map<Character, Integer> map, Map<Character, Integer> totals, char defaultChar) {
 		return getChar(map, totals, defaultChar, true);
 	}
 
@@ -286,7 +358,7 @@ abstract class CsvFormatDetector implements InputAnalysisProcess {
 	 *
 	 * @return the character with the highest number associated.
 	 */
-	private char max(Map<Character, Integer> map, Map<Character, Integer> totals, char defaultChar) {
+	protected char max(Map<Character, Integer> map, Map<Character, Integer> totals, char defaultChar) {
 		return getChar(map, totals, defaultChar, false);
 	}
 
@@ -300,7 +372,7 @@ abstract class CsvFormatDetector implements InputAnalysisProcess {
 	 *
 	 * @return the character with the highest/lowest number associated.
 	 */
-	private char getChar(Map<Character, Integer> map, Map<Character, Integer> totals, char defaultChar, boolean min) {
+	protected char getChar(Map<Character, Integer> map, Map<Character, Integer> totals, char defaultChar, boolean min) {
 		int val = min ? Integer.MAX_VALUE : Integer.MIN_VALUE;
 		for (Entry<Character, Integer> e : map.entrySet()) {
 			int sum = e.getValue();
@@ -312,7 +384,13 @@ abstract class CsvFormatDetector implements InputAnalysisProcess {
 					Integer newTotal = totals.get(newChar);
 
 					if (currentTotal != null && newTotal != null) {
-						if ((min && newTotal > currentTotal) || (!min && newTotal > currentTotal)) {
+						if (currentTotal.equals(newTotal)) {
+							int defIndex = ArgumentUtils.indexOf(delimiterPreference, defaultChar, 0);
+							int newIndex = ArgumentUtils.indexOf(delimiterPreference, newChar, 0);
+							if (defIndex != -1 && newIndex != -1) {
+								defaultChar = defIndex < newIndex ? defaultChar : newChar;
+							}
+						} else if ((min && newTotal > currentTotal) || (!min && newTotal > currentTotal)) {
 							defaultChar = newChar;
 						}
 					} else if (isSymbol(newChar)) {
@@ -327,8 +405,12 @@ abstract class CsvFormatDetector implements InputAnalysisProcess {
 		return defaultChar;
 	}
 
-	private boolean isSymbol(char ch) {
-		return ch != comment && !Character.isLetterOrDigit(ch) && (ch == '\t' || ch >= ' ');
+	protected boolean isSymbol(char ch) {
+		return isAllowedDelimiter(ch) || ch != comment && !Character.isLetterOrDigit(ch) && (ch == '\t' || ch >= ' ');
+	}
+
+	protected boolean isAllowedDelimiter(char ch) {
+		return Arrays.binarySearch(allowedDelimiters, ch) >= 0;
 	}
 
 	/**
@@ -338,5 +420,5 @@ abstract class CsvFormatDetector implements InputAnalysisProcess {
 	 * @param quote       the discovered quote character
 	 * @param quoteEscape the discovered quote escape character.
 	 */
-	abstract void apply(char delimiter, char quote, char quoteEscape);
+	protected abstract void apply(char delimiter, char quote, char quoteEscape);
 }

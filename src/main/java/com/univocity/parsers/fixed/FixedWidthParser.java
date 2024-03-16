@@ -17,6 +17,7 @@ package com.univocity.parsers.fixed;
 
 import com.univocity.parsers.common.*;
 import com.univocity.parsers.common.input.*;
+import com.univocity.parsers.common.record.Record;
 import com.univocity.parsers.common.record.*;
 
 /**
@@ -116,9 +117,9 @@ public class FixedWidthParser extends AbstractParser<FixedWidthParserSettings> {
 					return lookupFormat != null ? NormalizedString.toArray(lookupFormat.fieldNames) : super.headers();
 				}
 
-				public Record toRecord(String[] row){
-					if(lookupFormat != null){
-						if(lookupFormat.context == null){
+				public Record toRecord(String[] row) {
+					if (lookupFormat != null) {
+						if (lookupFormat.context == null) {
 							lookupFormat.initializeLookupContext(context, lookupFormat.fieldNames);
 						}
 						return lookupFormat.context.toRecord(row);
@@ -149,64 +150,92 @@ public class FixedWidthParser extends AbstractParser<FixedWidthParserSettings> {
 			lookaheadInput.lookahead(maxLookupLength);
 
 			if (lookaheadFormats != null) {
-				for (int i = 0; i < lookaheadFormats.length; i++) {
-					if (lookaheadInput.matches(ch, lookaheadFormats[i].value, wildcard)) {
-						lengths = lookaheadFormats[i].lengths;
-						alignments = lookaheadFormats[i].alignments;
-						paddings = lookaheadFormats[i].paddings;
-						ignore = lookaheadFormats[i].ignore;
-						keepPaddingFlags = lookaheadFormats[i].keepPaddingFlags;
-						lookupFormat = lookaheadFormats[i];
-						matched = true;
-						break;
-					}
-				}
+				lookAheadFormatsNotNull(lookaheadInput, matched);
+				matched = true;
+	
 				if (lookbehindFormats != null && matched) {
-					lookbehindFormat = null;
-					for (int i = 0; i < lookbehindFormats.length; i++) {
-						if (lookaheadInput.matches(ch, lookbehindFormats[i].value, wildcard)) {
-							lookbehindFormat = lookbehindFormats[i];
-							break;
-						}
-					}
+					lookBehindFormatsNotNull(lookaheadInput);
 				}
 			} else {
-				for (int i = 0; i < lookbehindFormats.length; i++) {
-					if (lookaheadInput.matches(ch, lookbehindFormats[i].value, wildcard)) {
-						lookbehindFormat = lookbehindFormats[i];
-						matched = true;
-						lengths = rootLengths;
-						ignore = rootIgnore;
-						keepPaddingFlags = rootKeepPaddingFlags;
-						break;
-					}
-				}
+				lookAheadFormatsNull(lookaheadInput, matched);
 			}
 
 			if (!matched) {
-				if (lookbehindFormat == null) {
-					if (rootLengths == null) {
-						throw new TextParsingException(context, "Cannot process input with the given configuration. No default field lengths defined and no lookahead/lookbehind value match '" + lookaheadInput.getLookahead(ch) + '\'');
-					}
-					lengths = rootLengths;
-					alignments = rootAlignments;
-					paddings = rootPaddings;
-					ignore = rootIgnore;
-					keepPaddingFlags = rootKeepPaddingFlags;
-					lookupFormat = null;
-				} else {
-					lengths = lookbehindFormat.lengths;
-					alignments = lookbehindFormat.alignments;
-					paddings = lookbehindFormat.paddings;
-					ignore = lookbehindFormat.ignore;
-					keepPaddingFlags = lookbehindFormat.keepPaddingFlags;
-					lookupFormat = lookbehindFormat;
-				}
+				unmatched();
 			}
 		}
+		
+		process();
+	}
 
-		int i;
-		for (i = 0; i < lengths.length; i++) {
+	//New Method (Extract Method)
+	private void unmatched(){
+		if (lookbehindFormat == null) {
+			if (rootLengths == null) {
+				throw new TextParsingException(context, "Cannot process input with the given configuration. No default field lengths defined and no lookahead/lookbehind value match '" + lookaheadInput.getLookahead(ch) + '\'');
+			}
+			lengths = rootLengths;
+			alignments = rootAlignments;
+			paddings = rootPaddings;
+			ignore = rootIgnore;
+			keepPaddingFlags = rootKeepPaddingFlags;
+			lookupFormat = null;
+		} else {
+			lengths = lookbehindFormat.lengths;
+			alignments = lookbehindFormat.alignments;
+			paddings = lookbehindFormat.paddings;
+			ignore = lookbehindFormat.ignore;
+			keepPaddingFlags = lookbehindFormat.keepPaddingFlags;
+			lookupFormat = lookbehindFormat;
+		}
+	}
+
+	//Extract Method
+	private void lookAheadFormatsNotNull(LookaheadCharInputReader lookaheadInput, boolean matched){
+		//lookaheadInput = input;
+		for (int i = 0; i < lookaheadFormats.length; i++) {
+			if (lookaheadInput.matches(ch, lookaheadFormats[i].value, wildcard)) {
+				lengths = lookaheadFormats[i].lengths;
+				alignments = lookaheadFormats[i].alignments;
+				paddings = lookaheadFormats[i].paddings;
+				ignore = lookaheadFormats[i].ignore;
+				keepPaddingFlags = lookaheadFormats[i].keepPaddingFlags;
+				lookupFormat = lookaheadFormats[i];
+				matched = true;
+				break;
+			}
+		}
+	}
+	
+	//Extract Method
+	private void lookBehindFormatsNotNull(LookaheadCharInputReader lookaheadInput){
+		//lookaheadInput = input;
+		lookbehindFormat = null;
+		for (int i = 0; i < lookbehindFormats.length; i++) {
+			if (lookaheadInput.matches(ch, lookbehindFormats[i].value, wildcard)) {
+				lookbehindFormat = lookbehindFormats[i];
+				break;
+			}
+		}
+	}
+
+	//Extract Method
+	private void lookAheadFormatsNull(LookaheadCharInputReader lookaheadInput, boolean matched){
+		for (int i = 0; i < lookbehindFormats.length; i++) {
+			if (lookaheadInput.matches(ch, lookbehindFormats[i].value, wildcard)) {
+				lookbehindFormat = lookbehindFormats[i];
+				matched = true;
+				lengths = rootLengths;
+				ignore = rootIgnore;
+				keepPaddingFlags = rootKeepPaddingFlags;
+				break;
+			}
+		}
+	}
+
+	//Extract Method
+	private void process(){
+		for (int i = 0; i < lengths.length; i++) {
 			final boolean ignorePadding = keepPaddingFlags[i] == null ? !keepPadding : !keepPaddingFlags[i];
 			length = lengths[i];
 			if (paddings != null) {
@@ -215,13 +244,14 @@ public class FixedWidthParser extends AbstractParser<FixedWidthParserSettings> {
 			if (alignments != null) {
 				alignment = alignments[i];
 			}
+			final boolean lastFieldOfRecord = (i + 1 >= lengths.length);
 
-			if(ignorePadding) {
-				skipPadding();
+			if (ignorePadding) {
+				skipPadding(lastFieldOfRecord);
 			}
 
 			if (ignoreLeadingWhitespace) {
-				skipWhitespace();
+				skipWhitespace(lastFieldOfRecord, ignorePadding);
 			}
 
 			if (recordEndsOnNewLine) {
@@ -233,7 +263,7 @@ public class FixedWidthParser extends AbstractParser<FixedWidthParserSettings> {
 				}
 			} else if (length > 0) {
 				readValue(ignorePadding);
-				if (i + 1 < lengths.length) {
+				if (!lastFieldOfRecord) {
 					ch = input.nextChar();
 				}
 			}
@@ -248,7 +278,6 @@ public class FixedWidthParser extends AbstractParser<FixedWidthParserSettings> {
 			skipToNewLine();
 		}
 		useDefaultPadding = false;
-
 	}
 
 	private void skipToNewLine() {
@@ -261,15 +290,19 @@ public class FixedWidthParser extends AbstractParser<FixedWidthParserSettings> {
 		}
 	}
 
-	private void skipPadding() {
+	private void skipPadding(boolean lastFieldOfRecord) {
 		while (ch == padding && length-- > 0) {
-			ch = input.nextChar();
+			if (!lastFieldOfRecord || length > 0) {
+				ch = input.nextChar();
+			}
 		}
 	}
 
-	private void skipWhitespace() {
-		while ((ch <= ' ' && whitespaceRangeStart < ch || ch == padding) && length-- > 0) {
-			ch = input.nextChar();
+	private void skipWhitespace(boolean lastFieldOfRecord, boolean ignorePadding) {
+		while ((ch <= ' ' && whitespaceRangeStart < ch || ch == padding) && !(!ignorePadding && ch == padding) && length-- > 0) {
+			if (!lastFieldOfRecord || length > 0) {
+				ch = input.nextChar();
+			}
 		}
 	}
 
@@ -280,7 +313,7 @@ public class FixedWidthParser extends AbstractParser<FixedWidthParserSettings> {
 					output.appender.appendIgnoringWhitespace(ch);
 					ch = input.nextChar();
 				}
-			} else if(ignorePadding){
+			} else if (ignorePadding) {
 				while (length-- > 0 && ch != newLine) {
 					output.appender.appendIgnoringWhitespaceAndPadding(ch, padding);
 					ch = input.nextChar();
@@ -298,7 +331,7 @@ public class FixedWidthParser extends AbstractParser<FixedWidthParserSettings> {
 					output.appender.append(ch);
 					ch = input.nextChar();
 				}
-			} else if(ignorePadding) {
+			} else if (ignorePadding) {
 				while (length-- > 0 && ch != newLine) {
 					output.appender.appendIgnoringPadding(ch, padding);
 					ch = input.nextChar();
@@ -320,7 +353,7 @@ public class FixedWidthParser extends AbstractParser<FixedWidthParserSettings> {
 				while (length-- > 0) {
 					output.appender.appendIgnoringWhitespace(ch = input.nextChar());
 				}
-			} else if(ignorePadding){
+			} else if (ignorePadding) {
 				output.appender.appendIgnoringWhitespaceAndPadding(ch, padding);
 				while (length-- > 0) {
 					output.appender.appendIgnoringWhitespaceAndPadding(ch = input.nextChar(), padding);
@@ -337,7 +370,7 @@ public class FixedWidthParser extends AbstractParser<FixedWidthParserSettings> {
 				while (length-- > 0) {
 					output.appender.append(ch = input.nextChar());
 				}
-			} else if(ignorePadding){
+			} else if (ignorePadding) {
 				output.appender.appendIgnoringPadding(ch, padding);
 				while (length-- > 0) {
 					output.appender.appendIgnoringPadding(ch = input.nextChar(), padding);

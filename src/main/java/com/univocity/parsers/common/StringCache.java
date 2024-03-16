@@ -20,15 +20,24 @@ import java.util.*;
 import java.util.concurrent.*;
 
 /**
- * A simple cache of values associated with strings.
+ * A simple cache of values associated with strings. It is built to simply prevent generating the same value over
+ * and over again over a short period of time. Once its size limit is reached, the cache will be fully cleared.
+ * Do not use this as a general purpose caching solution. This meant for storing values that can be cheaply produced
+ * and re-generating them every now and then won't incur in any major performance impact.
+ *
  * @param <T> the type of entry to be stored in the cache
  */
 public abstract class StringCache<T> {
 
+	private static final int DEFAULT_SIZE_LIMIT = 16384;
+	private static final int DEFAULT_MAX_STRING_LENGTH = 0;
 	private final Map<String, SoftReference<T>> stringCache = new ConcurrentHashMap<String, SoftReference<T>>();
+	private int sizeLimit = DEFAULT_SIZE_LIMIT;
+	private int maxStringLength = DEFAULT_MAX_STRING_LENGTH;
 
 	/**
 	 * Converts a given string to a value
+	 *
 	 * @param input the input to be converted and stored in the cache
 	 * @return the value generated from the given string/
 	 */
@@ -36,41 +45,89 @@ public abstract class StringCache<T> {
 
 	/**
 	 * Tests whether the cache contains the given key
+	 *
 	 * @param input a string that might have a value associated to it.
 	 * @return {@code true} if the cache contains (or contained) a value associated with the given key.
 	 */
-	public boolean containsKey(String input){
+	public boolean containsKey(String input) {
 		return stringCache.containsKey(input);
 	}
 
 	/**
-	 * Associates a value to a string
-	 * @param input the string to be associated with a given value
-	 * @param value the value associated with the given string
+	 * Returns the size limit of this string cache. Defaults to 16,384. For simplicity, when
+	 * this limit is reached, the entire cache is cleared.
+	 *
+	 * @return the maximum number of entries that can be stored in this string cache.
 	 */
-	public void put(String input, T value) {
-		stringCache.put(input, new SoftReference<T>(value));
+	public int getSizeLimit() {
+		return sizeLimit;
+	}
+
+	/**
+	 * Defines the size limit of this string cache (16,384 by default). For simplicity, when
+	 * this limit is reached, the entire cache is cleared.
+	 *
+	 * @param sizeLimit the maximum number of entries that can be stored in this string cache.
+	 */
+	public void setSizeLimit(int sizeLimit) {
+		if (sizeLimit <= 0) {
+			sizeLimit = DEFAULT_SIZE_LIMIT;
+		}
+		this.sizeLimit = sizeLimit;
 	}
 
 	/**
 	 * Returns the value associated with the given string. If it doesn't exist,
 	 * or if it has been evicted, a value will be populated using {@link #process(String)}
+	 *
 	 * @param input the string whose associated value will be returned
 	 * @return the value associated with the given string.
 	 */
 	public T get(String input) {
-		if(input == null){
+		if (input == null || (maxStringLength > 0 && input.length() > maxStringLength)) {
 			return null;
 		}
 		SoftReference<T> ref = stringCache.get(input);
 		T out;
 		if (ref == null || ref.get() == null) {
 			out = process(input);
+			if (stringCache.size() >= sizeLimit) {
+				stringCache.clear();
+			}
 			ref = new SoftReference<T>(out);
 			stringCache.put(input, ref);
 		} else {
 			out = ref.get();
 		}
 		return out;
+	}
+
+	/**
+	 * Removes all entries stored in this cache.
+	 */
+	public void clear() {
+		stringCache.clear();
+	}
+
+	/**
+	 * Returns the maximum length a {@code String} key can have to be used as a key in this cache.
+	 * If the {@code String} length exceeds this limit, the value associated with it won't be cached.
+	 * Defaults to 1024
+	 *
+	 * @return the maximum length a {@code String} key can have
+	 */
+	public int getMaxStringLength() {
+		return maxStringLength;
+	}
+
+	/**
+	 * Returns the maximum length a {@code String} key can have to be used as a key in this cache.
+	 * If the {@code String} length exceeds this limit, the value associated with it won't be cached.
+	 * Defaults to 1024
+	 *
+	 * @param maxStringLength the maximum length a {@code String} key can have
+	 */
+	public void setMaxStringLength(int maxStringLength) {
+		this.maxStringLength = maxStringLength;
 	}
 }

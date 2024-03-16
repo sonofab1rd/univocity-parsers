@@ -103,4 +103,32 @@ public class CsvFormatDetectorTest {
 		assertEquals(rows.size(), 4);
 	}
 
+	@Test
+	public static void testDelimitersDetectedUsingOrderOfPreference() {
+		String input = "HEADER1, HEADER2, HEADER3\n" +
+				"11, 12, 13\n" +
+				"21, 22, 23\n" +
+				"31, 32, 33\n";
+
+		CsvParserSettings settings = new CsvParserSettings();
+		settings.setDelimiterDetectionEnabled(true, ',', ' ');
+		CsvParser parser = new CsvParser(settings);
+		parser.parseAll(new StringReader(input));
+		CsvFormat format = parser.getDetectedFormat();
+		assertEquals(format.getDelimiter(), ',');
+	}
+
+	@Test
+	public static void testDelimitersDetectedUsingOrderOfPreference1() {
+		String input = "HEADER 1,HEADER 2,HEADER 3\n" +
+						"SOME TEXT 1,SOME TEXT 2,SOME TEXT 3,";
+
+		CsvParserSettings settings = new CsvParserSettings();
+		settings.setDelimiterDetectionEnabled(true, ',', ' ');
+		settings.setFormatDetectorRowSampleCount(2);
+		CsvParser parser = new CsvParser(settings);
+		parser.parseAll(new StringReader(input));
+		CsvFormat format = parser.getDetectedFormat();
+		assertEquals(format.getDelimiter(), ',');
+	}
 }

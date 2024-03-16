@@ -29,6 +29,24 @@ import static org.testng.Assert.*;
 
 public class CsvParserTest extends ParserTestCase {
 
+	
+	@Test
+	public void FilterOutRowsWithNoValues() {
+		String test = "v11, v12, v13\n" + ",,,\n" + "v31, v32, v33\n" + "v41, v42, v43"; //contains multiple rows with no values
+		CsvParserSettings csvSettings = new CsvParserSettings();
+		csvSettings.setSkipEmptyLines(true);
+		csvSettings.setSkipEmptyRecords(false);
+		csvSettings.setHeaderExtractionEnabled(true);
+		CsvParser parser = new CsvParser(csvSettings);
+
+		List<Record> result =  parser.parseAllRecords(new ByteArrayInputStream(test.getBytes()));
+		assertEquals(result.size(), 4);
+
+		csvSettings.setSkipEmptyRecords(true);
+		result = parser.parseAllRecords(new ByteArrayInputStream(test.getBytes()) );
+		assertEquals(result.size(), 3);
+	}
+	
 	@DataProvider(name = "testProvider")
 	public Object[][] testProvider() {
 		return new Object[][]{
@@ -362,7 +380,9 @@ public class CsvParserTest extends ParserTestCase {
 		CsvParser parser = new CsvParser(settings);
 
 		parser.beginParsing(new StringReader("a,b,,c,\"\",\r\n"));
+		//parser.parse(new StringReader("a,b,,c,\"\",\r\n"));
 		String[] row = parser.parseNext();
+		List<String[]> rows = processor.getRows();
 
 		assertEquals(row[0], "a");
 		assertEquals(row[1], "b");
@@ -370,6 +390,8 @@ public class CsvParserTest extends ParserTestCase {
 		assertEquals(row[3], "c");
 		assertEquals(row[4], "");
 		assertEquals(row[5], null);
+
+
 	}
 
 	@DataProvider
@@ -865,5 +887,63 @@ public class CsvParserTest extends ParserTestCase {
 		final CsvParser csvParser = new CsvParser(settings);
 		csvParser.beginParsing(csv);
 		assertEquals(csvParser.getDetectedFormat().getDelimiter(), ',');
+	}
+
+	@Test(enabled = true, dataProvider = "csvProvider")
+	public void parseDisablingCommentLineCheck(String csvFile, char[] lineSeparator) throws Exception {
+		CsvParserSettings settings = newCsvInputSettings(lineSeparator);
+		settings.setCommentCollectionEnabled(true);
+		settings.setRowProcessor(processor);
+		settings.setCommentProcessingEnabled(false);
+		settings.setHeaderExtractionEnabled(true);
+		settings.setIgnoreLeadingWhitespaces(true);
+		settings.setIgnoreTrailingWhitespaces(true);
+
+		CsvParser parser = new CsvParser(settings);
+		parser.parse(newReader(csvFile));
+
+		String[] expectedHeaders = new String[]{"Year", "Make", "Model", "Description", "Price"};
+
+		String[][] expectedResult = new String[][]{
+				{"1997", "Ford", "E350", "ac, abs, moon", "3000.00"},
+				{"1999", "Chevy", "Venture \"Extended Edition\"", null, "4900.00"},
+				{"#this is a comment and should be ignored"},
+				{"1996", "Jeep", "Grand Cherokee", "MUST SELL!\nair, moon roof, loaded", "4799.00"},
+				{"1999", "Chevy", "Venture \"Extended Edition, Very Large\"", null, "5000.00"},
+				{null, null, "Venture \"Extended Edition\"", null, "4900.00"},
+				{null, null, null, null, null},
+				{null, null, null, null, null},
+				{null, null, "5", null, null},
+				{"1997", "Ford", "E350", "ac, abs, moon", "3000.00"},
+				{"1997", "Ford", "E350", " ac, abs, moon ", "3000.00"},
+				{"1997", "Ford", "E350", " ac, abs, moon ", "3000.00"},
+				{"19 97", "Fo rd", "E350", " ac, abs, moon ", "3000.00"},
+				{null, " ", null, "  ", "30 00.00"},
+				{"1997", "Ford", "E350", " \" ac, abs, moon \" ", "3000.00"},
+				{"1997", "Ford", "E350", "\" ac, abs, moon \" ", "3000.00"},
+		};
+
+		assertHeadersAndValuesMatch(expectedHeaders, expectedResult);
+
+		Map<Long, String> comments = parser.getContext().comments();
+		assertEquals(comments.size(), 0);
+		assertEquals(parser.getContext().lastComment(), null);
+	}
+	@Test
+	public void asciiControlCharAsQuoteAndEscape() {
+		final Reader csv = new StringReader("\u00127\u0012," +
+				"\u0012EmbeddedDouble\u0012," +
+				"\u0012field\u0012\u0012 t\u0012\u0012ext\u0012," +
+				"\u0012field\u0012\u0012 t\u0012\u0012ext\u0012");
+		final CsvParserSettings settings = new CsvParserSettings();
+		settings.getFormat().setQuote('\u0012');
+		settings.getFormat().setQuoteEscape('\u0012');
+		settings.setUnescapedQuoteHandling(UnescapedQuoteHandling.STOP_AT_CLOSING_QUOTE);
+		final CsvParser csvParser = new CsvParser(settings);
+		final String[] row = csvParser.parseAll(csv).get(0);
+		assertEquals(row[0], "7");
+		assertEquals(row[1], "EmbeddedDouble");
+		assertEquals(row[2], "field\u0012 t\u0012ext");
+		assertEquals(row[3], "field\u0012 t\u0012ext");
 	}
 }
