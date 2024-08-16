@@ -21,8 +21,22 @@ import com.univocity.parsers.fixed.*;
 import org.testng.annotations.*;
 
 import java.io.*;
+import java.util.TimeZone;
 
 public class AnnotationExamples extends Example {
+
+	private TimeZone timeZone;
+
+	@BeforeClass
+	void setTimeZone() {
+		timeZone = TimeZone.getDefault();
+		TimeZone.setDefault(TimeZone.getTimeZone("Australia/Adelaide"));
+	}
+
+	@AfterClass
+	void resetTimeZone() {
+		TimeZone.setDefault(timeZone);
+	}
 
 	private FixedWidthParserSettings getSettings(FixedWidthFields fields) {
 		FixedWidthParserSettings settings = new FixedWidthParserSettings(fields);
