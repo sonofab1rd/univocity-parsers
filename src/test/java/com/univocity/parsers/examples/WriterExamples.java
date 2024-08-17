@@ -30,6 +30,19 @@ import static org.testng.Assert.*;
 
 public class WriterExamples extends Example {
 
+	private TimeZone timeZone;
+
+	@BeforeClass
+	void setTimeZone() {
+		timeZone = TimeZone.getDefault();
+		TimeZone.setDefault(TimeZone.getTimeZone("Australia/Adelaide"));
+	}
+
+	@AfterClass
+	void resetTimeZone() {
+		TimeZone.setDefault(timeZone);
+	}
+
 	List<Object[]> rows = Arrays.asList(
 			new Object[][]{
 					{"1997", "Ford", "E350", "ac, abs, moon", "3000.00"},
