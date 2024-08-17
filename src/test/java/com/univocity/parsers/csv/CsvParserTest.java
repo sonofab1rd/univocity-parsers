@@ -40,7 +40,6 @@ public class CsvParserTest extends ParserTestCase {
 
 		List<Record> result =  parser.parseAllRecords(new ByteArrayInputStream(test.getBytes()));
 		assertEquals(result.size(), 3);
-
 	}
 	
 	@DataProvider(name = "testProvider")
@@ -376,9 +375,7 @@ public class CsvParserTest extends ParserTestCase {
 		CsvParser parser = new CsvParser(settings);
 
 		parser.beginParsing(new StringReader("a,b,,c,\"\",\r\n"));
-		//parser.parse(new StringReader("a,b,,c,\"\",\r\n"));
 		String[] row = parser.parseNext();
-		List<String[]> rows = processor.getRows();
 
 		assertEquals(row[0], "a");
 		assertEquals(row[1], "b");
@@ -386,8 +383,6 @@ public class CsvParserTest extends ParserTestCase {
 		assertEquals(row[3], "c");
 		assertEquals(row[4], "");
 		assertEquals(row[5], null);
-
-
 	}
 
 	@DataProvider

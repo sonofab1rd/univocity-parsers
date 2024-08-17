@@ -34,8 +34,7 @@ public class Github_357 {
 	public void testLineSeparatorQuoting() {
 		CsvWriterSettings writerSettings = new CsvWriterSettings();
 		writerSettings.getFormat().setLineSeparator("!!");
-		File file = new File("text.txt");
-		CsvWriter writer = new CsvWriter(file, writerSettings);
+		CsvWriter writer = new CsvWriter(new StringWriter(), writerSettings);
 
 		String result = writer.writeRowToString("abc!!abc").trim();
 		assertEquals(result, "\"abc!!abc\"");
