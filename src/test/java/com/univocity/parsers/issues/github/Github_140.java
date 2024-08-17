@@ -47,7 +47,6 @@ public class Github_140 {
 					int out = firstPart.length();
 					firstPart = null;
 					throw new IllegalStateException("Boom!");
-//					return out;
 				}
 				throw new IllegalStateException("Boom!");
 			}
