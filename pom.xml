@@ -2,12 +2,13 @@
 		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>com.univocity</groupId>
+	<groupId>com.sonofab1rd</groupId>
 	<artifactId>univocity-parsers</artifactId>
-	<version>2.9.2-SNAPSHOT</version>
+	<version>2.10.0-SNAPSHOT</version>
 	<name>univocity-parsers</name>
 	<packaging>jar</packaging>
 	<description>univocity's open source parsers for processing different text formats using a consistent API</description>
+	<url>https://github.com/sonofab1rd/univocity-parsers</url>
 
 	<licenses>
 		<license>
@@ -17,6 +18,31 @@
 			<comments>A business-friendly OSS license</comments>
 		</license>
 	</licenses>
+
+	<scm>
+		<url>https://github.com/sonofab1rd/univocity-parsers</url>
+		<connection>scm:git:git://github.com/sonofab1rd/univocity-parsers.git</connection>
+		<developerConnection>scm:git:git@github.com/sonofab1rd/univocity-parsers.git</developerConnection>
+	</scm>
+
+	<developers>
+		<developer>
+			<id>parsers</id>
+			<name>univocity parser development team</name>
+		</developer>
+	</developers>
+
+	<distributionManagement>
+		<snapshotRepository>
+			<id>ossrh</id>
+			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+		</snapshotRepository>
+
+		<repository>
+			<id>ossrh</id>
+			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+		</repository>
+	</distributionManagement>
 
 	<build>
 		<plugins>
@@ -136,6 +162,41 @@
 						<phase>package</phase>
 						<goals>
 							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+				<plugin>
+					<groupId>org.sonatype.central</groupId>
+					<artifactId>central-publishing-maven-plugin</artifactId>
+					<version>0.5.0</version>
+					<extensions>true</extensions>
+					<configuration>
+						<publishingServerId>central</publishingServerId>
+						<autoPublish>true</autoPublish>
+						<waitUntil>published</waitUntil>
+					</configuration>
+				</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-gpg-plugin</artifactId>
+				<version>1.5</version>
+				<configuration>
+					<keyname>${gpg.keyname}</keyname>
+					<passphraseServerId>${gpg.keyname}</passphraseServerId>
+					<gpgArguments>
+						<arg>--pinentry-mode</arg>
+						<arg>loopback</arg>
+					</gpgArguments>
+				</configuration>
+				<executions>
+					<execution>
+						<id>sign-artifacts</id>
+						<phase>verify</phase>
+						<goals>
+							<goal>sign</goal>
 						</goals>
 					</execution>
 				</executions>
