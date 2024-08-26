@@ -14,7 +14,7 @@ jobs:
           server-username: MAVEN_USERNAME
           server-password: MAVEN_PASSWORD
           gpg-private-key: ${{ secrets.MAVEN_GPG_PRIVATE_KEY }} # Value of the GPG private key to import
-          GPG_PASSPHRASE: MAVEN_GPG_PASSPHRASE # env variable for GPG private key passphrase
+          gpg-passphrase: MAVEN_GPG_PASSPHRASE # env variable for GPG private key passphrase
 
       - name: Publish package
         run: mvn deploy
