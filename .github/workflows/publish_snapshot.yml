@@ -1,4 +1,5 @@
-name: Publish package to the Maven Central Repository
+#Publish Snapshot package to the Maven Central Snapshot Repository
+name: Publish Snapshot
 on:
   push:
     branches:
