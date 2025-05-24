@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.sonofab1rd</groupId>
     <artifactId>univocity-parsers</artifactId>
-    <version>2.10.1</version>
+    <version>2.10.2-SNAPSHOT</version>
     <name>univocity-parsers</name>
     <packaging>jar</packaging>
     <description>univocity's open source parsers for processing different text formats using a consistent API
@@ -35,12 +35,12 @@
 
     <distributionManagement>
         <snapshotRepository>
-            <id>ossrh</id>
-            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+            <id>central</id>
+            <url>https://central.sonatype.com/repository/maven-snapshots/</url>
         </snapshotRepository>
 
         <repository>
-            <id>ossrh</id>
+            <id>central</id>
             <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
         </repository>
     </distributionManagement>
@@ -171,12 +171,13 @@
             <plugin>
                 <groupId>org.sonatype.central</groupId>
                 <artifactId>central-publishing-maven-plugin</artifactId>
-                <version>0.5.0</version>
+                <version>0.7.0</version>
                 <extensions>true</extensions>
                 <configuration>
                     <publishingServerId>central</publishingServerId>
                     <autoPublish>true</autoPublish>
                     <waitUntil>published</waitUntil>
+                    <checksums>required</checksums>
                 </configuration>
             </plugin>
 
