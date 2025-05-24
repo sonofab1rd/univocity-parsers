@@ -6,13 +6,9 @@
 # separate terms of service, privacy policy, and support
 # documentation.
 
-name: Build Main Branch
+name: Build
 
-on:
-  push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+on: [push, pull_request]
 
 jobs:
   build:
