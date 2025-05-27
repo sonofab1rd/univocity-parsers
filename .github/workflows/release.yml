@@ -12,4 +12,4 @@ jobs:
           distribution: 'temurin'
           cache: maven
       - name: Build with Maven
-        run: mvn -B release
+        run: mvn -B release:prepare && mvn -B release:perform
