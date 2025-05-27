@@ -22,7 +22,6 @@
 
     <scm>
         <url>https://github.com/sonofab1rd/univocity-parsers</url>
-        git@github.com:sonofab1rd/univocity-parsers.git
         <connection>scm:git:git://github.com/sonofab1rd/univocity-parsers.git</connection>
         <developerConnection>scm:git:git://github.com/sonofab1rd/univocity-parsers.git</developerConnection>
     </scm>
