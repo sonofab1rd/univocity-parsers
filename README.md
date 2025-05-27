@@ -21,3 +21,17 @@ Feel free to submit a contribution via pull requests. Every little bit is apprec
     <version>2.10.1</version>
 </dependency>
 ```
+
+### Release Workflow
+release_number = project version from the pom, minus "-SNAPSHOT"
+
+- create a branch release/[release_number]
+- remove the "-SNAPSHOT" from the version number in the pom
+- draft a new github release
+- create a new tag with release_number
+- target the release branch
+- give the release a title
+- publish release
+- delete the release branch
+
+This should start the Publish Release workflow and the artifacts should be published to maven central.
