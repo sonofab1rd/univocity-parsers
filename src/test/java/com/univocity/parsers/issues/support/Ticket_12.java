@@ -64,7 +64,7 @@ public class Ticket_12 {
 			new CsvRoutines(settings).parseAll(A.class, new StringReader("a,b,c\n,,443\n"));
 			fail("Expecting exception to be thrown");
 		} catch (Exception e) {
-			e.printStackTrace();
+//			e.printStackTrace();
 			assertTrue(e.getMessage().startsWith("lalala"));
 			assertTrue(e.getMessage().contains("Unable to set value '443' of type 'java.lang.String' to method 'setComment' "));
 			assertTrue(e.getMessage().contains("Internal state when error was thrown"));
@@ -79,7 +79,7 @@ public class Ticket_12 {
 			new CsvRoutines(settings).writeAll(Collections.singleton(new A("345")), A.class, new StringWriter());
 			fail("Expecting exception to be thrown");
 		} catch (Exception e) {
-			e.printStackTrace();
+//			e.printStackTrace();
 			assertTrue(e.getMessage().startsWith("lalala"));
 			assertTrue(e.getMessage().contains("Unable to get value from field"));
 			assertTrue(e.getMessage().contains("Internal state when error was thrown"));
@@ -138,7 +138,7 @@ public class Ticket_12 {
 			new CsvRoutines(settings).parseAll(B.class, new StringReader("a,b,c\n,,443\n"));
 			fail("Expecting exception to be thrown");
 		} catch (Exception e) {
-			e.printStackTrace();
+//			e.printStackTrace();
 			assertTrue(e.getMessage().startsWith("out of range: 1 >= 443 <=5"));
 			assertTrue(e.getMessage().contains("Internal state when error was thrown"));
 		}
@@ -152,7 +152,7 @@ public class Ticket_12 {
 			new CsvRoutines(settings).writeAll(Collections.singleton(new B(345)), B.class, new StringWriter());
 			fail("Expecting exception to be thrown");
 		} catch (Exception e) {
-			e.printStackTrace();
+//			e.printStackTrace();
 			assertTrue(e.getMessage().startsWith("out of range: 1 >= 345 <=5"));
 			assertTrue(e.getMessage().contains("Internal state when error was thrown"));
 		}
