@@ -343,7 +343,7 @@ public abstract class CsvFormatDetector implements InputAnalysisProcess {
 	 *
 	 * @param map         the map of characters and their numbers
 	 * @param defaultChar the default character to return in case the map is empty
-	 *
+	 * @param totals      the map of characters and their totals
 	 * @return the character with the lowest number associated.
 	 */
 	protected char min(Map<Character, Integer> map, Map<Character, Integer> totals, char defaultChar) {
@@ -355,7 +355,7 @@ public abstract class CsvFormatDetector implements InputAnalysisProcess {
 	 *
 	 * @param map         the map of characters and their numbers
 	 * @param defaultChar the default character to return in case the map is empty
-	 *
+	 * @param totals      the map of characters and their totals
 	 * @return the character with the highest number associated.
 	 */
 	protected char max(Map<Character, Integer> map, Map<Character, Integer> totals, char defaultChar) {
@@ -369,7 +369,7 @@ public abstract class CsvFormatDetector implements InputAnalysisProcess {
 	 * @param defaultChar the default character to return in case the map is empty
 	 * @param min         a flag indicating whether to return the character associated with the lowest number in the map.
 	 *                    If {@code false} then the character associated with the highest number found will be returned.
-	 *
+	 * @param totals      the map of characters and their totals
 	 * @return the character with the highest/lowest number associated.
 	 */
 	protected char getChar(Map<Character, Integer> map, Map<Character, Integer> totals, char defaultChar, boolean min) {

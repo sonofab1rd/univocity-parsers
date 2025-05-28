@@ -101,6 +101,7 @@ public abstract class Format implements Cloneable{
 	/**
 	 * Defines the line separator sequence that should be used for parsing and writing.
 	 * @param lineSeparator a sequence of 1 to 2 characters that identifies the end of a line
+	 * @return this
 	 */
 	public Format setLineSeparator(String lineSeparator) {
 		if (lineSeparator == null || lineSeparator.isEmpty()) {
@@ -113,6 +114,7 @@ public abstract class Format implements Cloneable{
 	/**
 	 * Defines the line separator sequence that should be used for parsing and writing.
 	 * @param lineSeparator a sequence of 1 to 2 characters that identifies the end of a line
+	 * @return this
 	 */
 	public Format setLineSeparator(char[] lineSeparator) {
 		if (lineSeparator == null || lineSeparator.length == 0) {
@@ -140,6 +142,7 @@ public abstract class Format implements Cloneable{
 	/**
 	 * Sets the normalized newline character, which is automatically replaced by {@link Format#lineSeparator} when reading/writing
 	 * @param normalizedNewline a single character used to represent a line separator.
+	 * @return this
 	 */
 	public Format setNormalizedNewline(char normalizedNewline) {
 		this.normalizedNewline = normalizedNewline;
@@ -168,6 +171,7 @@ public abstract class Format implements Cloneable{
 	 * Defines the character that represents a line comment when found in the beginning of a line of text. Defaults to '#'
 	 * <p> Use '\0' to disable comment skipping.
 	 * @param comment the comment character
+	 * @return this
 	 */
 	public Format setComment(char comment) {
 		this.comment = comment;

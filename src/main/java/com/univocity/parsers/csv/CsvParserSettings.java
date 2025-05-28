@@ -129,8 +129,8 @@ public class CsvParserSettings extends CommonParserSettings<CsvFormat> {
 	 * Configures how to handle unescaped quotes inside quoted values. If set to {@code true}, the parser will parse the quote normally as part of the value.
 	 * If set the {@code false}, a {@link TextParsingException} will be thrown. Defaults to {@code true}.
 	 *
-	 * @param parseUnescapedQuotes indicates whether or not the CSV parser should accept unescaped quotes inside quoted values.
-	 *
+	 * @param parseUnescapedQuotes indicates whether the CSV parser should accept unescaped quotes inside quoted values.
+	 * @return this
 	 * @deprecated use {@link #setUnescapedQuoteHandling(UnescapedQuoteHandling)} instead. The configuration returned by {@link #getUnescapedQuoteHandling()}
 	 * will override this setting if not null.
 	 */
@@ -146,7 +146,7 @@ public class CsvParserSettings extends CommonParserSettings<CsvFormat> {
 	 *
 	 * @param parseUnescapedQuotesUntilDelimiter a flag indicating that the parser should stop accumulating values when a field delimiter character is
 	 *                                           found when parsing unquoted and unescaped values.
-	 *
+	 * @return this
 	 * @deprecated use {@link #setUnescapedQuoteHandling(UnescapedQuoteHandling)} instead. The configuration returned by {@link #getUnescapedQuoteHandling()}
 	 * will override this setting if not null.
 	 */
@@ -261,6 +261,7 @@ public class CsvParserSettings extends CommonParserSettings<CsvFormat> {
 	 * @param separatorDetectionEnabled the flag to enable/disable discovery of the column delimiter character.
 	 * @param delimitersForDetection    possible delimiters for detection when {@link #isDelimiterDetectionEnabled()} evaluates
 	 *                                  to {@code true}, in order of priority.
+	 * @return this
 	 */
 	public final CsvParserSettings setDelimiterDetectionEnabled(boolean separatorDetectionEnabled, char... delimitersForDetection) {
 		this.delimiterDetectionEnabled = separatorDetectionEnabled;
