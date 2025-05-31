@@ -78,7 +78,7 @@ public class BatchedColumnProcessorTest {
 
 		CsvParserSettings settings = new CsvParserSettings();
 		settings.setHeaderExtractionEnabled(true);
-		settings.setRowProcessor(processor);
+		settings.setProcessor(processor);
 
 		new CsvParser(settings).parse(new StringReader(INPUT));
 	}

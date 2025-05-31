@@ -84,7 +84,7 @@ public class TsvWriterTest extends TsvParserTest {
 		result = "This line and the following should be skipped. The third is ignored automatically because it is blank\n\n\n".replaceAll("\n", new String(lineSeparator)) + result;
 
 		TsvParserSettings parserSettings = new TsvParserSettings();
-		parserSettings.setRowProcessor(processor);
+		parserSettings.setProcessor(processor);
 		parserSettings.getFormat().setLineSeparator(lineSeparator);
 		parserSettings.setHeaderExtractionEnabled(true);
 		parserSettings.setIgnoreLeadingWhitespaces(false);
@@ -144,7 +144,7 @@ public class TsvWriterTest extends TsvParserTest {
 
 		RowListProcessor rowList = new RowListProcessor();
 		TsvParserSettings parserSettings = new TsvParserSettings();
-		parserSettings.setRowProcessor(rowList);
+		parserSettings.setProcessor(rowList);
 		parserSettings.getFormat().setLineSeparator(lineSeparator);
 		parserSettings.setHeaderExtractionEnabled(true);
 		parserSettings.setIgnoreLeadingWhitespaces(false);

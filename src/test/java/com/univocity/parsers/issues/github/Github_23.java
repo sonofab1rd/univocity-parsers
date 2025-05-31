@@ -51,7 +51,7 @@ public class Github_23 {
 	public void testCaseInsensitiveBooleanConversion() {
 		CsvParserSettings parserSettings = new CsvParserSettings();
 		BeanListProcessor<AB> beanProcessor = new BeanListProcessor<AB>(AB.class);
-		parserSettings.setRowProcessor(beanProcessor);
+		parserSettings.setProcessor(beanProcessor);
 
 		CsvParser parser = new CsvParser(parserSettings);
 		parser.parseLine("false,true");
@@ -102,7 +102,7 @@ public class Github_23 {
 	public void testCustomBooleanConversion() {
 		CsvParserSettings parserSettings = new CsvParserSettings();
 		BeanListProcessor<AB1> beanProcessor = new BeanListProcessor<AB1>(AB1.class);
-		parserSettings.setRowProcessor(beanProcessor);
+		parserSettings.setProcessor(beanProcessor);
 
 		CsvParser parser = new CsvParser(parserSettings);
 		parser.parseLine("false,true");

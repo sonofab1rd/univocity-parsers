@@ -26,7 +26,7 @@ import java.util.*;
  *
  * <hr><blockquote><pre>{@code
  *
- * parserSettings.setRowProcessor(new BeanListProcessor(MyObject.class));
+ * parserSettings.setProcessor(new BeanListProcessor(MyObject.class));
  * parser.parse(reader); // will invoke the {@link BeanListProcessor#beanProcessed(Object, Context)} method for each generated object.
  *
  * List&lt;T&gt; beans = rowProcessor.getBeans();

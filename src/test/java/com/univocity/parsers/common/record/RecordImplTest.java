@@ -239,7 +239,7 @@ public class RecordImplTest {
 		parser.getRecordMetadata().convertFields(Conversions.toNull("null")).set("value");
 		List<Record> records = parser.parseAllRecords();
 		assertEquals(records.get(0).getString("name"), "a");
-		assertEquals(records.get(0).getInt("value"), new Integer(1));
+		assertEquals(records.get(0).getInt("value"), Integer.valueOf(1));
 		assertEquals(records.get(1).getString("name"), "b");
 		assertNull(records.get(1).getString("value"));
 	}

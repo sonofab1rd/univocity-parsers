@@ -45,7 +45,7 @@ public class Ticket_7 {
 	public void testLenientDateFormatOptionInAnnotation() {
 		CsvParserSettings settings = new CsvParserSettings();
 		BeanListProcessor<DateBean> processor = new BeanListProcessor<DateBean>(DateBean.class);
-		settings.setRowProcessor(processor);
+		settings.setProcessor(processor);
 
 		settings.setRowProcessorErrorHandler(new RowProcessorErrorHandler() {
 			@Override

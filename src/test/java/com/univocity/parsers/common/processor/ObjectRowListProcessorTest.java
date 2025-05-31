@@ -44,7 +44,7 @@ public class ObjectRowListProcessorTest {
 	private List<Object[]> process(String input, ObjectRowListProcessor processor, CsvParserSettings settings) {
 		StringReader reader = new StringReader(input);
 		settings.setHeaderExtractionEnabled(true);
-		settings.setRowProcessor(processor);
+		settings.setProcessor(processor);
 
 		CsvParser parser = new CsvParser(settings);
 		parser.parse(reader);

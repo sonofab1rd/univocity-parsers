@@ -61,7 +61,7 @@ public class Github_52 {
 
 		CsvParserSettings parserSettings = new CsvParserSettings();
 		parserSettings.getFormat().setLineSeparator(lineSeparator);
-		parserSettings.setRowProcessor(rowProcessor);
+		parserSettings.setProcessor(rowProcessor);
 
 		CsvParser parser = new CsvParser(parserSettings);
 		parser.parse(new StringReader(input));

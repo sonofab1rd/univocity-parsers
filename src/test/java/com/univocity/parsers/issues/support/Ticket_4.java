@@ -54,7 +54,7 @@ public class Ticket_4 {
 		TsvParserSettings settings = new TsvParserSettings();
 		settings.getFormat().setLineSeparator("\n");
 		BeanListProcessor<DocumentMetadata> beanProcessor = new BeanListProcessor<DocumentMetadata>(DocumentMetadata.class);
-		settings.setRowProcessor(beanProcessor);
+		settings.setProcessor(beanProcessor);
 		TsvParser parser = new TsvParser(settings);
 		parser.parseAll(new StringReader("27102	22132639.txt\n27109	22134500.txt"));
 

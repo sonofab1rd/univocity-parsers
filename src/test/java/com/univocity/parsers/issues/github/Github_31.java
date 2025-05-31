@@ -103,7 +103,7 @@ public class Github_31 {
 		CsvParserSettings parserSettings = new CsvParserSettings();
 		parserSettings.getFormat().setLineSeparator("\n");
 		BeanListProcessor<AB> beanProcessor = new BeanListProcessor<AB>(AB.class);
-		parserSettings.setRowProcessor(beanProcessor);
+		parserSettings.setProcessor(beanProcessor);
 
 		String input = "0,MALE,,MAL,m\n1,FEMALE,M,FEM,Foo";
 

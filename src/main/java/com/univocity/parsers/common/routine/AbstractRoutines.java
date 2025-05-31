@@ -367,7 +367,7 @@ public abstract class AbstractRoutines<P extends CommonParserSettings<?>, W exte
 			AbstractParser<P> parser = createParser(parserSettings);
 			parser.parse(input);
 		} finally {
-			parserSettings.setRowProcessor(null);
+			parserSettings.setProcessor(null);
 		}
 	}
 
@@ -378,7 +378,7 @@ public abstract class AbstractRoutines<P extends CommonParserSettings<?>, W exte
 
 	private void setRowProcessor(RowProcessor rowProcessor) {
 		validateParserSettings();
-		parserSettings.setRowProcessor(rowProcessor);
+		parserSettings.setProcessor(rowProcessor);
 	}
 
 	private RowProcessor createWritingRowProcessor(final Writer output) {
@@ -645,7 +645,7 @@ public abstract class AbstractRoutines<P extends CommonParserSettings<?>, W exte
 			createParser(parserSettings).parse(input);
 			return processor.getBeans();
 		} finally {
-			parserSettings.setRowProcessor(null);
+			parserSettings.setProcessor(null);
 		}
 	}
 
@@ -850,7 +850,7 @@ public abstract class AbstractRoutines<P extends CommonParserSettings<?>, W exte
 			@Override
 			public void processEnded(ParsingContext context) {
 				super.processEnded(context);
-				parserSettings.setRowProcessor(null);
+				parserSettings.setProcessor(null);
 			}
 		};
 		processor.setColumnMapper(columnMapper);

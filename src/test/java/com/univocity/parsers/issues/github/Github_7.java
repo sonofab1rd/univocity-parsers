@@ -44,7 +44,7 @@ public class Github_7 extends ParserTestCase {
 
 		RowListProcessor processor = new RowListProcessor();
 		CsvParserSettings settings = new CsvParserSettings();
-		settings.setRowProcessor(processor);
+		settings.setProcessor(processor);
 		settings.setHeaderExtractionEnabled(true);
 		settings.getFormat().setLineSeparator("\n");
 		settings.setIgnoreTrailingWhitespaces(false);

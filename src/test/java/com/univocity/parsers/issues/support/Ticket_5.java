@@ -46,7 +46,7 @@ public class Ticket_5 {
 				return "MASTER".equals(row[0]);
 			}
 		};
-		settings.setRowProcessor(processor);
+		settings.setProcessor(processor);
 
 		new CsvParser(settings).parse(new StringReader(input));
 
