@@ -81,7 +81,7 @@ public class Github_13 {
 
 		CsvParserSettings settings = new CsvParserSettings();
 		settings.getFormat().setLineSeparator("\n");
-		settings.setRowProcessor(valueSwitch);
+		settings.setProcessor(valueSwitch);
 
 		CsvParser parser = new CsvParser(settings);
 		parser.parse(new StringReader(CSV_INPUT));

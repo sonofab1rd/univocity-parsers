@@ -86,7 +86,7 @@ public class AnnotatedBeanProcessorTest {
 
 		StringReader reader = new StringReader(input);
 		settings.setHeaderExtractionEnabled(true);
-		settings.setRowProcessor(processor);
+		settings.setProcessor(processor);
 
 		CsvParser parser = new CsvParser(settings);
 		parser.parse(reader);
@@ -139,7 +139,7 @@ public class AnnotatedBeanProcessorTest {
 
 		StringReader reader = new StringReader(input);
 		settings.setHeaderExtractionEnabled(true);
-		settings.setRowProcessor(processor);
+		settings.setProcessor(processor);
 
 		CsvParser parser = new CsvParser(settings);
 		parser.parse(reader);

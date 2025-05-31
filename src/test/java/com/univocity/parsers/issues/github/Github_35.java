@@ -56,7 +56,7 @@ public class Github_35 {
 		ObjectRowListProcessor readerProcessor = new ObjectRowListProcessor();
 		readerProcessor.convertAll(Conversions.toBoolean("T", "F")); //reads "T" and "F" back to true and false
 
-		parserSettings.setRowProcessor(readerProcessor);
+		parserSettings.setProcessor(readerProcessor);
 
 		CsvParser parser = new CsvParser(parserSettings);
 		parser.parseLine(line1);

@@ -70,7 +70,7 @@ public class Github_14 {
 			objectColumnProcessor.convertIndexes(Conversions.toBoolean("T", "F"), boolenToDoubleConversion).set(0, 1);
 		}
 
-		parserSettings.setRowProcessor(objectColumnProcessor);
+		parserSettings.setProcessor(objectColumnProcessor);
 
 		CsvParser parser = new CsvParser(parserSettings);
 		parser.parse(new StringReader("A,B\nT,F\nF,T"));

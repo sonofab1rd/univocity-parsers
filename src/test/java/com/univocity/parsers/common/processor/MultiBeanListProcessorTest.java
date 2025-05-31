@@ -90,7 +90,7 @@ public class MultiBeanListProcessorTest extends AnnotatedBeanProcessorTest{
 		StringReader reader = new StringReader(input);
 		settings.setHeaderExtractionEnabled(true);
 		settings.getFormat().setLineSeparator("\n");
-		settings.setRowProcessor(processor);
+		settings.setProcessor(processor);
 
 		CsvParser parser = new CsvParser(settings);
 		parser.parse(reader);

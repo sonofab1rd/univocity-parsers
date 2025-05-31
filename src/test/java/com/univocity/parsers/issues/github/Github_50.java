@@ -64,7 +64,7 @@ public class Github_50 {
 		final CsvParserSettings settings = new CsvParserSettings();
 		settings.setHeaderExtractionEnabled(true);
 		settings.getFormat().setLineSeparator("\n");
-		settings.setRowProcessor(processor);
+		settings.setProcessor(processor);
 
 		new CsvParser(settings).parse(new StringReader("q,a,Y,b\n1,a@b.com,blah,25-DEC-2015"));
 

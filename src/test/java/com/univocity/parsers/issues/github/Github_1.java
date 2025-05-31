@@ -43,7 +43,7 @@ public class Github_1 extends ParserTestCase {
 		//settings.setHeaders("column1", "column2", "column3", "column4");
 		settings.excludeIndexes(1);
 		settings.setColumnReorderingEnabled(false);
-		settings.setRowProcessor(processor);
+		settings.setProcessor(processor);
 
 		CsvParser parser = new CsvParser(settings);
 		parser.parse(reader);

@@ -58,7 +58,7 @@ public class Github_19 {
 		BeanListProcessor<NewStudentForm> rowProcessor = new BeanListProcessor<NewStudentForm>(NewStudentForm.class);
 		CsvParserSettings parserSettings = new CsvParserSettings();
 		parserSettings.getFormat().setLineSeparator("\n");
-		parserSettings.setRowProcessor(rowProcessor);
+		parserSettings.setProcessor(rowProcessor);
 
 		CsvParser parser = new CsvParser(parserSettings);
 		parser.parse(new StringReader("psp,pass,PSP\nbsp,pass,bsp, Dev1"));

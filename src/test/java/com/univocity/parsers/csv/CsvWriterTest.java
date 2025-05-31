@@ -85,7 +85,7 @@ public class CsvWriterTest extends CsvParserTest {
 		result = "This line and the following should be skipped. The third is ignored automatically because it is blank\n\n\n".replaceAll("\n", new String(lineSeparator)) + result;
 
 		CsvParserSettings parserSettings = new CsvParserSettings();
-		parserSettings.setRowProcessor(processor);
+		parserSettings.setProcessor(processor);
 		parserSettings.getFormat().setLineSeparator(lineSeparator);
 		parserSettings.setHeaderExtractionEnabled(true);
 		parserSettings.setIgnoreLeadingWhitespaces(false);
@@ -146,7 +146,7 @@ public class CsvWriterTest extends CsvParserTest {
 
 		RowListProcessor rowList = new RowListProcessor();
 		CsvParserSettings parserSettings = new CsvParserSettings();
-		parserSettings.setRowProcessor(rowList);
+		parserSettings.setProcessor(rowList);
 		parserSettings.getFormat().setLineSeparator(lineSeparator);
 		parserSettings.setHeaderExtractionEnabled(true);
 		parserSettings.setIgnoreLeadingWhitespaces(false);

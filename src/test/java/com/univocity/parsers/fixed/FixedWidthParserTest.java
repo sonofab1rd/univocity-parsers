@@ -57,7 +57,7 @@ public class FixedWidthParserTest extends ParserTestCase {
 	public void testFixedWidthParser(String fileExtension, char[] lineSeparator) throws Exception {
 		FixedWidthParserSettings settings = newSettings(getFieldLengths(), lineSeparator);
 		settings.setHeaderExtractionEnabled(true);
-		settings.setRowProcessor(processor);
+		settings.setProcessor(processor);
 		FixedWidthParser parser = new FixedWidthParser(settings);
 
 		parser.parse(this.newReader("/fixed/essential" + fileExtension));
@@ -88,7 +88,7 @@ public class FixedWidthParserTest extends ParserTestCase {
 		settings.setSkipTrailingCharsUntilNewline(true);
 		settings.setRecordEndsOnNewline(true);
 		settings.setHeaderExtractionEnabled(false);
-		settings.setRowProcessor(processor);
+		settings.setProcessor(processor);
 
 		String[] expectedHeaders = new String[]{
 				"DATE", "NAME", "OWED", "INTEREST",
@@ -117,7 +117,7 @@ public class FixedWidthParserTest extends ParserTestCase {
 		settings.setSkipTrailingCharsUntilNewline(true);
 		settings.setRecordEndsOnNewline(true);
 		settings.setHeaderExtractionEnabled(false);
-		settings.setRowProcessor(processor);
+		settings.setProcessor(processor);
 
 		String[] expectedHeaders = new String[]{
 				"DATE", "NAME", "OWED", "INTEREST",
@@ -148,7 +148,7 @@ public class FixedWidthParserTest extends ParserTestCase {
 		settings.setIgnoreTrailingWhitespaces(false);
 		settings.setRecordEndsOnNewline(true);
 		settings.setHeaderExtractionEnabled(false);
-		settings.setRowProcessor(processor);
+		settings.setProcessor(processor);
 
 		String[] expectedHeaders = new String[]{
 				"DATE", "NAME", "OWED", "INTEREST",

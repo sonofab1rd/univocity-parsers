@@ -43,7 +43,7 @@ public class ProfilerTest extends Example {
 				{
 					getFormat().setLineSeparator("\n");
 					setMaxCharsPerColumn(1000);
-					setRowProcessor(rowProcessor());
+					setProcessor(rowProcessor());
 				}
 			};
 			CsvParser test = new CsvParser(options);
@@ -62,7 +62,7 @@ public class ProfilerTest extends Example {
 					getFormat().setLineSeparator("\n");
 					setMaxCharsPerColumn(1000);
 					setReadInputOnSeparateThread(true);
-					setRowProcessor(rowProcessor());
+					setProcessor(rowProcessor());
 				}
 			};
 			CsvParser test = new CsvParser(options);

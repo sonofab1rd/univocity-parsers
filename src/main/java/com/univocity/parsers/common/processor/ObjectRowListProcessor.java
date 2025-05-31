@@ -28,7 +28,7 @@ import java.util.*;
  *
  * ObjectRowListProcessor processor = new ObjectRowListProcessor();
  * processor.convertIndexes(Conversions.toBigDecimal()).set(4, 6);
- * parserSettings.setRowProcessor(new ObjectRowListProcessor());
+ * parserSettings.setProcessor(new ObjectRowListProcessor());
  * parser.parse(reader); // will invoke the {@link AbstractObjectListProcessor#rowProcessed(Object[], Context)} method for each parsed record.
  *
  * String[] headers = rowProcessor.getHeaders();

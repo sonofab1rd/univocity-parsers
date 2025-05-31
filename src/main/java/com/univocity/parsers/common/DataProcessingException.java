@@ -1,4 +1,4 @@
-/*******************************************************************************
+/*
  * Copyright 2015 Univocity Software Pty Ltd
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,7 +12,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- ******************************************************************************/
+ */
 package com.univocity.parsers.common;
 
 import com.univocity.parsers.common.processor.*;
@@ -34,7 +34,7 @@ public class DataProcessingException extends TextParsingException {
 	private int columnIndex;
 	private Object[] row;
 	private Object value;
-	private Map<String, Object> values = new HashMap<String, Object>();
+	private final Map<String, Object> values = new HashMap<>();
 	private boolean fatal = true;
 	private boolean handled = false;
 	private String details = null;

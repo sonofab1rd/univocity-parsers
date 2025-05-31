@@ -45,7 +45,7 @@ public class ObjectColumnProcessorTest {
 		CsvParserSettings settings = new CsvParserSettings();
 		settings.getFormat().setLineSeparator("\n");
 		settings.setHeaderExtractionEnabled(true);
-		settings.setRowProcessor(processor);
+		settings.setProcessor(processor);
 
 		new CsvParser(settings).parse(new StringReader(INPUT));
 

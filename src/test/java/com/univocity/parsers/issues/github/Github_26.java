@@ -51,7 +51,7 @@ public class Github_26 {
 		CsvParserSettings parserSettings = new CsvParserSettings();
 		BeanListProcessor<AB> beanProcessor = new BeanListProcessor<AB>(AB.class);
 		parserSettings.getFormat().setLineSeparator("\n");
-		parserSettings.setRowProcessor(beanProcessor);
+		parserSettings.setProcessor(beanProcessor);
 		parserSettings.setHeaderExtractionEnabled(true);
 
 		CsvParser parser = new CsvParser(parserSettings);

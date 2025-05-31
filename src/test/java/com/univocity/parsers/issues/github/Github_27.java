@@ -76,7 +76,7 @@ public class Github_27 {
 	public void testParsingWithHeaderAnnotation() {
 		CsvParserSettings parserSettings = new CsvParserSettings();
 		BeanListProcessor<AB> beanProcessor = new BeanListProcessor<AB>(AB.class);
-		parserSettings.setRowProcessor(beanProcessor);
+		parserSettings.setProcessor(beanProcessor);
 		parserSettings.getFormat().setLineSeparator("\n");
 		CsvParser parser = new CsvParser(parserSettings);
 		parser.parse(new StringReader("true,,Line1\nfalse,,Line2\n"));
@@ -125,7 +125,7 @@ public class Github_27 {
 	public void testParsingWithHeaderAnnotationInSubclass() {
 		CsvParserSettings parserSettings = new CsvParserSettings();
 		BeanListProcessor<AB2> beanProcessor = new BeanListProcessor<AB2>(AB2.class);
-		parserSettings.setRowProcessor(beanProcessor);
+		parserSettings.setProcessor(beanProcessor);
 		parserSettings.getFormat().setLineSeparator("\n");
 
 		CsvParser parser = new CsvParser(parserSettings);
@@ -185,7 +185,7 @@ public class Github_27 {
 	public void testParsingWithHeaderAnnotationInInterface() {
 		CsvParserSettings parserSettings = new CsvParserSettings();
 		BeanListProcessor<AB3> beanProcessor = new BeanListProcessor<AB3>(AB3.class);
-		parserSettings.setRowProcessor(beanProcessor);
+		parserSettings.setProcessor(beanProcessor);
 		parserSettings.getFormat().setLineSeparator("\n");
 
 		CsvParser parser = new CsvParser(parserSettings);

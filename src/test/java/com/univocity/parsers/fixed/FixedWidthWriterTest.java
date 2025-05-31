@@ -78,7 +78,7 @@ public class FixedWidthWriterTest extends FixedWidthParserTest {
 		FixedWidthParserSettings parserSettings = new FixedWidthParserSettings(getFieldLengths());
 		parserSettings.getFormat().setPadding('-');
 		parserSettings.getFormat().setLineSeparator(lineSeparator);
-		parserSettings.setRowProcessor(processor);
+		parserSettings.setProcessor(processor);
 		parserSettings.setHeaderExtractionEnabled(true);
 		parserSettings.setIgnoreLeadingWhitespaces(false);
 		parserSettings.setIgnoreTrailingWhitespaces(false);
@@ -192,7 +192,7 @@ public class FixedWidthWriterTest extends FixedWidthParserTest {
 		FixedWidthParserSettings parserSettings = new FixedWidthParserSettings(getFieldLengths());
 		parserSettings.getFormat().setLineSeparator(lineSeparator);
 		parserSettings.getFormat().setPadding('-');
-		parserSettings.setRowProcessor(processor);
+		parserSettings.setProcessor(processor);
 		parserSettings.setRecordEndsOnNewline(true);
 		parserSettings.setHeaderExtractionEnabled(true);
 		parserSettings.setIgnoreLeadingWhitespaces(false);
@@ -214,7 +214,7 @@ public class FixedWidthWriterTest extends FixedWidthParserTest {
 		ObjectRowListProcessor rowProcessor = new ObjectRowListProcessor();
 
 		CsvParserSettings parserSettings = new CsvParserSettings();
-		parserSettings.setRowProcessor(rowProcessor);
+		parserSettings.setProcessor(rowProcessor);
 		parserSettings.setHeaderExtractionEnabled(true);
 		parserSettings.getFormat().setLineSeparator("\n");
 

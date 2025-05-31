@@ -123,7 +123,7 @@ public abstract class AbstractParser<T extends CommonParserSettings<?>> {
 
 	/**
 	 * Parses the entirety of a given input and delegates each parsed row to an instance of {@link RowProcessor}, defined by
-	 * {@link CommonParserSettings#getRowProcessor()}.
+	 * {@link CommonParserSettings#getProcessor()}.
 	 *
 	 * @param reader The input to be parsed.
 	 */
@@ -721,7 +721,7 @@ public abstract class AbstractParser<T extends CommonParserSettings<?>> {
 
 	/**
 	 * Parses the entirety of a given file and delegates each parsed row to an instance of {@link RowProcessor}, defined by
-	 * {@link CommonParserSettings#getRowProcessor()}.
+	 * {@link CommonParserSettings#getProcessor()}.
 	 *
 	 * @param file The file to be parsed.
 	 */
@@ -731,7 +731,7 @@ public abstract class AbstractParser<T extends CommonParserSettings<?>> {
 
 	/**
 	 * Parses the entirety of a given file and delegates each parsed row to an instance of {@link RowProcessor}, defined by
-	 * {@link CommonParserSettings#getRowProcessor()}.
+	 * {@link CommonParserSettings#getProcessor()}.
 	 *
 	 * @param file     The file to be parsed.
 	 * @param encoding the encoding of the file
@@ -742,7 +742,7 @@ public abstract class AbstractParser<T extends CommonParserSettings<?>> {
 
 	/**
 	 * Parses the entirety of a given file and delegates each parsed row to an instance of {@link RowProcessor}, defined by
-	 * {@link CommonParserSettings#getRowProcessor()}.
+	 * {@link CommonParserSettings#getProcessor()}.
 	 *
 	 * @param file     The file to be parsed.
 	 * @param encoding the encoding of the file
@@ -753,7 +753,7 @@ public abstract class AbstractParser<T extends CommonParserSettings<?>> {
 
 	/**
 	 * Parses the entirety of a given input and delegates each parsed row to an instance of {@link RowProcessor}, defined by
-	 * {@link CommonParserSettings#getRowProcessor()}.
+	 * {@link CommonParserSettings#getProcessor()}.
 	 *
 	 * @param input The input to be parsed. The input stream will be closed automatically, unless {@link CommonParserSettings#isAutoClosingEnabled()} evaluates
 	 *              to {@code false}.
@@ -764,7 +764,7 @@ public abstract class AbstractParser<T extends CommonParserSettings<?>> {
 
 	/**
 	 * Parses the entirety of a given input and delegates each parsed row to an instance of {@link RowProcessor}, defined by
-	 * {@link CommonParserSettings#getRowProcessor()}.
+	 * {@link CommonParserSettings#getProcessor()}.
 	 *
 	 * @param input    The input to be parsed. The input stream will be closed automatically, unless {@link CommonParserSettings#isAutoClosingEnabled()}
 	 *                 evaluates to {@code false}.
@@ -776,7 +776,7 @@ public abstract class AbstractParser<T extends CommonParserSettings<?>> {
 
 	/**
 	 * Parses the entirety of a given input and delegates each parsed row to an instance of {@link RowProcessor}, defined by
-	 * {@link CommonParserSettings#getRowProcessor()}.
+	 * {@link CommonParserSettings#getProcessor()}.
 	 *
 	 * @param input    The input to be parsed. The input stream will be closed automatically, unless {@link CommonParserSettings#isAutoClosingEnabled()}
 	 *                 evaluates to {@code false}.
