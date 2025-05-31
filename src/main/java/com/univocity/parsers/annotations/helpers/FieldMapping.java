@@ -254,12 +254,25 @@ public class FieldMapping {
 		if (!accessible) {
 			if (target instanceof Field) {
 				final Field field = ((Field) target);
-				if (!field.isAccessible()) {
+				field.setAccessible(true);
+			} else if (target instanceof Method) {
+				final Method method = (Method) target;
+				method.setAccessible(true);
+			}
+			accessible = true;
+		}
+	}
+
+	private void setAccessible(Object instance) {
+		if (!accessible) {
+			if (target instanceof Field) {
+				final Field field = ((Field) target);
+				if (!field.canAccess(instance)) {
 					field.setAccessible(true);
 				}
 			} else if (target instanceof Method) {
 				final Method method = (Method) target;
-				if (!method.isAccessible()) {
+				if (!method.canAccess(instance)) {
 					method.setAccessible(true);
 				}
 			}

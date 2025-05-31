@@ -99,7 +99,7 @@ public class BeanConversionProcessor<T> extends DefaultConversionProcessor {
 		}
 
 		if (c != null) {
-			if (!c.isAccessible()) {
+			if (!c.canAccess(null)) {
 				c.setAccessible(true);
 			}
 		}
