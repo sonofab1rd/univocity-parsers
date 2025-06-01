@@ -217,25 +217,6 @@ public class TsvParserSettings extends CommonParserSettings<TsvFormat> {
 	}
 
 	/**
-	 * Defines a custom error handler to capture and handle errors that might happen while processing records with a {@link RowProcessor}
-	 * or a {@link RowWriterProcessor} (i.e. non-fatal {@link DataProcessingException}s).
-	 *
-	 * <p>The parsing parsing/writing won't stop (unless the error handler rethrows the {@link DataProcessingException} or manually stops the process).</p>
-	 *
-	 * @param rowProcessorErrorHandler the callback error handler with custom code to manage occurrences of {@link DataProcessingException}.
-	 *
-	 * @return this {@code TsvParserSettings} instance
-	 *
-	 * @deprecated Use the {@link #setProcessorErrorHandler(ProcessorErrorHandler)} method as it allows format-specific error handlers to be built to work with different implementations of {@link Context}.
-	 * Implementations based on {@link RowProcessorErrorHandler} allow only parsers who provide a {@link ParsingContext} to be used.
-	 */
-	@Deprecated
-	public TsvParserSettings setRowProcessorErrorHandler(RowProcessorErrorHandler rowProcessorErrorHandler) {
-		super.setRowProcessorErrorHandler(rowProcessorErrorHandler);
-		return this;
-	}
-
-	/**
 	 * Defines a custom error handler to capture and handle errors that might happen while processing records with a {@link com.univocity.parsers.common.processor.core.Processor}
 	 * or a {@link RowWriterProcessor} (i.e. non-fatal {@link DataProcessingException}s).
 	 *

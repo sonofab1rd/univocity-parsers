@@ -47,7 +47,7 @@ public class Ticket_7 {
 		BeanListProcessor<DateBean> processor = new BeanListProcessor<DateBean>(DateBean.class);
 		settings.setProcessor(processor);
 
-		settings.setRowProcessorErrorHandler(new RowProcessorErrorHandler() {
+		settings.setProcessorErrorHandler(new RowProcessorErrorHandler() {
 			@Override
 			public void handleError(DataProcessingException error, Object[] inputRow, ParsingContext context) {
 				int columnIndex = error.getColumnIndex();
