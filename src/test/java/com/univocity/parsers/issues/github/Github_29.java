@@ -62,7 +62,7 @@ public class Github_29 {
 
 		final List<String> errors = new ArrayList<String>();
 
-		parserSettings.setRowProcessorErrorHandler(new RowProcessorErrorHandler() {
+		parserSettings.setProcessorErrorHandler(new RowProcessorErrorHandler() {
 			@Override
 			public void handleError(DataProcessingException error, Object[] inputRow, ParsingContext context) {
 				assertNotNull(context);
@@ -98,7 +98,7 @@ public class Github_29 {
 
 		final List<String> errors = new ArrayList<String>();
 
-		writerSettings.setRowProcessorErrorHandler(new RowProcessorErrorHandler() {
+		writerSettings.setProcessorErrorHandler(new RowProcessorErrorHandler() {
 			@Override
 			public void handleError(DataProcessingException error, Object[] inputRow, ParsingContext context) {
 				assertNull(context);

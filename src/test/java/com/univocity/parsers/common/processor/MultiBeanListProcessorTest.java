@@ -79,7 +79,7 @@ public class MultiBeanListProcessorTest extends AnnotatedBeanProcessorTest{
 		processor.convertAll(Conversions.toNull("", "?"));
 
 		CsvParserSettings settings = newCsvInputSettings();
-		settings.setRowProcessorErrorHandler(new RowProcessorErrorHandler() {
+		settings.setProcessorErrorHandler(new RowProcessorErrorHandler() {
 			@Override
 			public void handleError(DataProcessingException error, Object[] inputRow, ParsingContext context) {
 				assertEquals(context.currentRecord(), 2L);
