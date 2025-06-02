@@ -17,6 +17,8 @@ package com.univocity.parsers.issues.github;
 
 import com.univocity.parsers.csv.*;
 import org.testng.annotations.*;
+
+import static com.univocity.parsers.csv.UnescapedQuoteHandling.STOP_AT_CLOSING_QUOTE;
 import static org.testng.Assert.*;
 
 /**
@@ -29,7 +31,7 @@ public class Github_61 {
 	@Test
 	public void testUnescapedQuotes1(){
 		CsvParserSettings settings = new CsvParserSettings();
-		settings.setParseUnescapedQuotesUntilDelimiter(false);
+		settings.setUnescapedQuoteHandling(STOP_AT_CLOSING_QUOTE);
 		settings.getFormat().setDelimiter(';');
 		settings.getFormat().setQuoteEscape('\0');
 
@@ -44,7 +46,7 @@ public class Github_61 {
 	@Test
 	public void testUnescapedQuotes2(){
 		CsvParserSettings settings = new CsvParserSettings();
-		settings.setParseUnescapedQuotesUntilDelimiter(false);
+		settings.setUnescapedQuoteHandling(STOP_AT_CLOSING_QUOTE);
 		settings.getFormat().setDelimiter(';');
 		settings.getFormat().setQuoteEscape('\0');
 

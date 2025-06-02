@@ -18,6 +18,7 @@ package com.univocity.parsers.issues.github;
 import com.univocity.parsers.csv.*;
 import org.testng.annotations.*;
 
+import static com.univocity.parsers.csv.UnescapedQuoteHandling.STOP_AT_DELIMITER;
 import static org.testng.Assert.*;
 
 /**
@@ -30,7 +31,7 @@ public class Github_60 {
 	@Test
 	public void testParseUnescapedQuotesWithStop() {
 		CsvParserSettings settings = new CsvParserSettings();
-		settings.setParseUnescapedQuotesUntilDelimiter(true);
+		settings.setUnescapedQuoteHandling(STOP_AT_DELIMITER);
 		settings.getFormat().setDelimiter('\t');
 
 		String[] values;

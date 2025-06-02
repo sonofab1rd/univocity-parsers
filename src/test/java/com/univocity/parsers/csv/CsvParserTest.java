@@ -25,6 +25,7 @@ import java.io.*;
 import java.util.*;
 import java.util.concurrent.*;
 
+import static com.univocity.parsers.csv.UnescapedQuoteHandling.*;
 import static org.testng.Assert.*;
 
 public class CsvParserTest extends ParserTestCase {
@@ -337,7 +338,7 @@ public class CsvParserTest extends ParserTestCase {
 	@Test
 	public void parseBrokenQuoteEscape() {
 		CsvParserSettings settings = newCsvInputSettings(new char[]{'\n'});
-		settings.setParseUnescapedQuotesUntilDelimiter(false);
+		settings.setUnescapedQuoteHandling(UnescapedQuoteHandling.STOP_AT_CLOSING_QUOTE);
 		settings.setHeaderExtractionEnabled(false);
 		CsvParser parser = new CsvParser(settings);
 
@@ -440,7 +441,7 @@ public class CsvParserTest extends ParserTestCase {
 	public void shouldNotAllowParseUnescapedQuotes() throws UnsupportedEncodingException {
 		CsvParserSettings settings = newCsvInputSettings(getLineSeparator());
 		settings.setProcessor(new RowListProcessor()); //Default used by CsvParserTest skip 2 lines
-		settings.setParseUnescapedQuotes(false); //To force exception
+		settings.setUnescapedQuoteHandling(RAISE_ERROR);
 
 		CsvParser parser = new CsvParser(settings);
 		try {
@@ -456,8 +457,7 @@ public class CsvParserTest extends ParserTestCase {
 		RowListProcessor processor = new RowListProcessor();
 		CsvParserSettings settings = newCsvInputSettings(getLineSeparator());
 		settings.setProcessor(processor); //Default used by CsvParserTest skip 2 lines
-		settings.setParseUnescapedQuotes(true);
-		settings.setParseUnescapedQuotesUntilDelimiter(false);
+		settings.setUnescapedQuoteHandling(STOP_AT_CLOSING_QUOTE);
 
 		CsvParser parser = new CsvParser(settings);
 		parser.parse(new StringReader("1997,\"TV 29\" LED\"\n"));
@@ -474,7 +474,7 @@ public class CsvParserTest extends ParserTestCase {
 	@Test(dataProvider = "testProvider")
 	public void shouldNotAllowUnexpectedCharacterAfterQuotedValue(String csvFile, char[] lineSeparator) throws UnsupportedEncodingException {
 		CsvParserSettings settings = newCsvInputSettings(lineSeparator);
-		settings.setParseUnescapedQuotes(false);
+		settings.setUnescapedQuoteHandling(RAISE_ERROR);
 
 		CsvParser parser = new CsvParser(settings);
 		try {
@@ -602,7 +602,7 @@ public class CsvParserTest extends ParserTestCase {
 	@Test
 	public void testParseUnescapedQuotesWithStop() {
 		CsvParserSettings settings = new CsvParserSettings();
-		settings.setParseUnescapedQuotesUntilDelimiter(true);
+		settings.setUnescapedQuoteHandling(STOP_AT_DELIMITER);
 		settings.getFormat().setLineSeparator("\n");
 
 		CsvParser parser = new CsvParser(settings);
