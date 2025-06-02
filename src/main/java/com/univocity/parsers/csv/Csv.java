@@ -15,6 +15,8 @@
  ******************************************************************************/
 package com.univocity.parsers.csv;
 
+import static com.univocity.parsers.csv.UnescapedQuoteHandling.RAISE_ERROR;
+
 /**
  * This class provides default configurations using CSV formats commonly used for parsing/writing.
  */
@@ -31,7 +33,7 @@ public class Csv {
 		CsvParserSettings settings = new CsvParserSettings();
 		settings.getFormat().setLineSeparator("\r\n");
 		settings.getFormat().setComment('\0');
-		settings.setParseUnescapedQuotes(false);
+		settings.setUnescapedQuoteHandling(RAISE_ERROR);
 
 		settings.setSkipEmptyLines(false);
 		settings.trimValues(false);

@@ -23,6 +23,8 @@ import com.univocity.parsers.common.processor.*;
 
 import java.util.*;
 
+import static com.univocity.parsers.csv.UnescapedQuoteHandling.STOP_AT_DELIMITER;
+
 /**
  * This is the configuration class used by the CSV parser ({@link CsvParser})
  *
@@ -41,8 +43,6 @@ import java.util.*;
 public class CsvParserSettings extends CommonParserSettings<CsvFormat> {
 
 	private String emptyValue = null;
-	private boolean parseUnescapedQuotes = true;
-	private boolean parseUnescapedQuotesUntilDelimiter = true;
 	private boolean escapeUnquotedValues = false;
 	private boolean keepEscapeSequences = false;
 	private boolean keepQuotes = false;
@@ -53,7 +53,7 @@ public class CsvParserSettings extends CommonParserSettings<CsvFormat> {
 
 	private boolean delimiterDetectionEnabled = false;
 	private boolean quoteDetectionEnabled = false;
-	private UnescapedQuoteHandling unescapedQuoteHandling = null;
+	private UnescapedQuoteHandling unescapedQuoteHandling = STOP_AT_DELIMITER;
 	private char[] delimitersForDetection = null;
 	private int formatDetectorRowSampleCount = 20;
 
@@ -110,68 +110,6 @@ public class CsvParserSettings extends CommonParserSettings<CsvFormat> {
 	@Override
 	protected CsvFormat createDefaultFormat() {
 		return new CsvFormat();
-	}
-
-	/**
-	 * Indicates whether the CSV parser should accept unescaped quotes inside quoted values and parse them normally. Defaults to {@code true}.
-	 *
-	 * @return a flag indicating whether or not the CSV parser should accept unescaped quotes inside quoted values.
-	 *
-	 * @deprecated use {@link #getUnescapedQuoteHandling()} instead. The configuration returned by {@link #getUnescapedQuoteHandling()} will override this
-	 * setting if not null.
-	 */
-	@Deprecated
-	public boolean isParseUnescapedQuotes() {
-		return parseUnescapedQuotes || (unescapedQuoteHandling != null && unescapedQuoteHandling != UnescapedQuoteHandling.RAISE_ERROR);
-	}
-
-	/**
-	 * Configures how to handle unescaped quotes inside quoted values. If set to {@code true}, the parser will parse the quote normally as part of the value.
-	 * If set the {@code false}, a {@link TextParsingException} will be thrown. Defaults to {@code true}.
-	 *
-	 * @param parseUnescapedQuotes indicates whether the CSV parser should accept unescaped quotes inside quoted values.
-	 * @return this
-	 * @deprecated use {@link #setUnescapedQuoteHandling(UnescapedQuoteHandling)} instead. The configuration returned by {@link #getUnescapedQuoteHandling()}
-	 * will override this setting if not null.
-	 */
-	@Deprecated
-	public CsvParserSettings setParseUnescapedQuotes(boolean parseUnescapedQuotes) {
-		this.parseUnescapedQuotes = parseUnescapedQuotes;
-		return this;
-	}
-
-	/**
-	 * Configures the parser to process values with unescaped quotes, and stop accumulating characters and consider the value parsed when a delimiter is found.
-	 * (defaults to {@code true})
-	 *
-	 * @param parseUnescapedQuotesUntilDelimiter a flag indicating that the parser should stop accumulating values when a field delimiter character is
-	 *                                           found when parsing unquoted and unescaped values.
-	 * @return this
-	 * @deprecated use {@link #setUnescapedQuoteHandling(UnescapedQuoteHandling)} instead. The configuration returned by {@link #getUnescapedQuoteHandling()}
-	 * will override this setting if not null.
-	 */
-	@Deprecated
-	public CsvParserSettings setParseUnescapedQuotesUntilDelimiter(boolean parseUnescapedQuotesUntilDelimiter) {
-		if (parseUnescapedQuotesUntilDelimiter) {
-			parseUnescapedQuotes = true;
-		}
-		this.parseUnescapedQuotesUntilDelimiter = parseUnescapedQuotesUntilDelimiter;
-		return this;
-	}
-
-	/**
-	 * When parsing unescaped quotes, indicates the parser should stop accumulating characters and consider the value parsed when a delimiter is found.
-	 * (defaults to {@code true})
-	 *
-	 * @return a flag indicating that the parser should stop accumulating values when a field delimiter character is
-	 * found when parsing unquoted and unescaped values.
-	 *
-	 * @deprecated use {@link #getUnescapedQuoteHandling()} instead. The configuration returned by {@link #getUnescapedQuoteHandling()} will override this
-	 * setting if not null.
-	 */
-	@Deprecated
-	public boolean isParseUnescapedQuotesUntilDelimiter() {
-		return (parseUnescapedQuotesUntilDelimiter && isParseUnescapedQuotes()) || (unescapedQuoteHandling == UnescapedQuoteHandling.STOP_AT_DELIMITER || unescapedQuoteHandling == UnescapedQuoteHandling.SKIP_VALUE);
 	}
 
 	/**
@@ -367,7 +305,7 @@ public class CsvParserSettings extends CommonParserSettings<CsvFormat> {
 	 * {@code [Line1 \r\n Line2]}
 	 *
 	 * @param normalizeLineEndingsWithinQuotes flag indicating whether line separators in quoted values should be replaced by
-	 *                                         the the character specified in {@link Format#getNormalizedNewline()} .
+	 *                                         the character specified in {@link Format#getNormalizedNewline()} .
 	 *
 	 * @return this {@code CsvParserSettings} instance
 	 */
@@ -378,26 +316,25 @@ public class CsvParserSettings extends CommonParserSettings<CsvFormat> {
 
 	/**
 	 * Configures the handling of values with unescaped quotes.
-	 * Defaults to {@code null}, for backward compatibility with {@link #isParseUnescapedQuotes()} and {@link #isParseUnescapedQuotesUntilDelimiter()}.
-	 * If set to a non-null value, this setting will override the configuration of {@link #isParseUnescapedQuotes()} and {@link
-	 * #isParseUnescapedQuotesUntilDelimiter()}.
+	 * Defaults to {@code STOP_AT_DELIMITER}.
 	 *
 	 * @param unescapedQuoteHandling the handling method to be used when unescaped quotes are found in the input.
 	 *
 	 * @return this {@code CsvParserSettings} instance
 	 */
 	public CsvParserSettings setUnescapedQuoteHandling(UnescapedQuoteHandling unescapedQuoteHandling) {
+		if (unescapedQuoteHandling == null ) {
+			unescapedQuoteHandling =  STOP_AT_DELIMITER;
+		}
 		this.unescapedQuoteHandling = unescapedQuoteHandling;
 		return this;
 	}
 
 	/**
 	 * Returns the method of handling values with unescaped quotes.
-	 * Defaults to {@code null}, for backward compatibility with {@link #isParseUnescapedQuotes()} and {@link #isParseUnescapedQuotesUntilDelimiter()}
-	 * If set to a non-null value, this setting will override the configuration of {@link #isParseUnescapedQuotes()} and {@link
-	 * #isParseUnescapedQuotesUntilDelimiter()}.
+	 * Defaults to {@code STOP_AT_DELIMITER}.
 	 *
-	 * @return the handling method to be used when unescaped quotes are found in the input, or {@code null} if not set.
+	 * @return the handling method to be used when unescaped quotes are found in the input.
 	 */
 	public UnescapedQuoteHandling getUnescapedQuoteHandling() {
 		return this.unescapedQuoteHandling;

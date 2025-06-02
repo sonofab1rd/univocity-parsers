@@ -21,6 +21,7 @@ import org.testng.annotations.*;
 import java.io.*;
 import java.util.*;
 
+import static com.univocity.parsers.csv.UnescapedQuoteHandling.RAISE_ERROR;
 import static org.testng.Assert.*;
 
 public class Ticket_3 {
@@ -56,7 +57,7 @@ public class Ticket_3 {
 		settings.setLineSeparatorDetectionEnabled(true);
 		settings.getFormat().setQuoteEscape('\\');
 		settings.getFormat().setCharToEscapeQuoteEscaping('\\');
-		settings.setParseUnescapedQuotes(false);
+		settings.setUnescapedQuoteHandling(RAISE_ERROR);
 		settings.setHeaderExtractionEnabled(false);
 		CsvParser parser = new CsvParser(settings);
 
