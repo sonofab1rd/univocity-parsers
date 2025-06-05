@@ -32,7 +32,7 @@ import java.util.*;
  *
  * <ul>
  * <li><b>rowProcessor:</b> a callback implementation of the interface {@link RowProcessor} which handles the life cycle of the parsing process and processes each record extracted from the input</li>
- * <li><b>headerExtractionEnabled <i>(defaults to false)</i>:</b> indicates whether or not the first valid record parsed from the input should be considered as the row containing the names of each column</li>
+ * <li><b>headerExtractionEnabled <i>(defaults to false)</i>:</b> indicates whether the first valid record parsed from the input should be considered as the row containing the names of each column</li>
  * <li><b>columnReorderingEnabled <i>(defaults to true)</i>:</b> indicates whether fields selected using the field selection methods (defined by the parent class {@link CommonSettings}) should be reordered.
  * <p>When disabled, each parsed record will contain values for all columns, in the order they occur in the input. Fields which were not selected will not be parsed but and the record will contain empty values.
  * <p>When enabled, each parsed record will contain values only for the selected columns. The values will be ordered according to the selection.
@@ -70,7 +70,7 @@ public abstract class CommonParserSettings<F extends Format> extends CommonSetti
 	private List<InputAnalysisProcess> inputAnalysisProcesses = new ArrayList<InputAnalysisProcess>();
 
 	/**
-	 * Indicates whether or not a separate thread will be used to read characters from the input while parsing (defaults true if the number of available
+	 * Indicates whether a separate thread will be used to read characters from the input while parsing (defaults true if the number of available
 	 * processors at runtime is greater than 1)
 	 * <p>When enabled, a reading thread (in {@code com.univocity.parsers.common.input.concurrent.ConcurrentCharInputReader})
 	 * will be started and load characters from the input, while the parser is processing its input buffer.
@@ -85,7 +85,7 @@ public abstract class CommonParserSettings<F extends Format> extends CommonSetti
 	}
 
 	/**
-	 * Defines whether or not a separate thread will be used to read characters from the input while parsing (defaults true if the number of available
+	 * Defines whether a separate thread will be used to read characters from the input while parsing (defaults true if the number of available
 	 * processors at runtime is greater than 1)
 	 * <p>When enabled, a reading thread (in {@code com.univocity.parsers.common.input.concurrent.ConcurrentCharInputReader}) will be
 	 * started and load characters from the input, while the
@@ -93,14 +93,14 @@ public abstract class CommonParserSettings<F extends Format> extends CommonSetti
 	 * <p>When disabled, the parsing process will briefly pause so the buffer can be replenished every time it is exhausted (in {@link DefaultCharInputReader}
 	 * it is not as bad or slow as it sounds, and can even be (slightly) more efficient if your input is small)
 	 *
-	 * @param readInputOnSeparateThread the flag indicating whether or not the input should be read on a separate thread
+	 * @param readInputOnSeparateThread the flag indicating whether the input should be read on a separate thread
 	 */
 	public void setReadInputOnSeparateThread(boolean readInputOnSeparateThread) {
 		this.readInputOnSeparateThread = readInputOnSeparateThread;
 	}
 
 	/**
-	 * Indicates whether or not the first valid record parsed from the input should be considered as the row containing the names of each column
+	 * Indicates whether the first valid record parsed from the input should be considered as the row containing the names of each column
 	 *
 	 * @return true if the first valid record parsed from the input should be considered as the row containing the names of each column, false otherwise
 	 */
@@ -109,7 +109,7 @@ public abstract class CommonParserSettings<F extends Format> extends CommonSetti
 	}
 
 	/**
-	 * Defines whether or not the first valid record parsed from the input should be considered as the row containing the names of each column
+	 * Defines whether the first valid record parsed from the input should be considered as the row containing the names of each column
 	 *
 	 * @param headerExtractionEnabled a flag indicating whether the first valid record parsed from the input should be considered as the row containing the
 	 *                                names of each column
@@ -287,7 +287,7 @@ public abstract class CommonParserSettings<F extends Format> extends CommonSetti
 	 * be parsed but the record will contain empty values.
 	 * <p>When enabled, each parsed record will contain values only for the selected columns. The values will be ordered according to the selection.
 	 *
-	 * @param columnReorderingEnabled the flag indicating whether or not selected fields should be reordered and returned by the parser
+	 * @param columnReorderingEnabled the flag indicating whether selected fields should be reordered and returned by the parser
 	 */
 	public void setColumnReorderingEnabled(boolean columnReorderingEnabled) {
 		if (columnReorderingEnabled && preventReordering()) {
@@ -396,7 +396,7 @@ public abstract class CommonParserSettings<F extends Format> extends CommonSetti
 	 * Indicates that comments found in the input must be collected (disabled by default). If enabled, comment lines will be
 	 * stored by the parser and made available via {@code AbstractParser.getContext().comments()} and {@code AbstractParser.getContext().lastComment()}
 	 *
-	 * @return a flag indicating whether or not to enable collection of comments.
+	 * @return a flag indicating whether to enable collection of comments.
 	 */
 	public boolean isCommentCollectionEnabled() {
 		return commentCollectionEnabled;
@@ -406,7 +406,7 @@ public abstract class CommonParserSettings<F extends Format> extends CommonSetti
 	 * Enables collection of comments found in the input (disabled by default). If enabled, comment lines will be
 	 * stored by the parser and made available via {@code AbstractParser.getContext().comments()} and {@code AbstractParser.getContext().lastComment()}
 	 *
-	 * @param commentCollectionEnabled flag indicating whether or not to enable collection of comments.
+	 * @param commentCollectionEnabled flag indicating whether to enable collection of comments.
 	 */
 	public void setCommentCollectionEnabled(boolean commentCollectionEnabled) {
 		this.commentCollectionEnabled = commentCollectionEnabled;
@@ -416,8 +416,8 @@ public abstract class CommonParserSettings<F extends Format> extends CommonSetti
 	 * Enables collection of comments found in the input (disabled by default). If enabled, comment lines will be
 	 * stored by the parser and made available via {@code AbstractParser.getContext().comments()} and {@code AbstractParser.getContext().lastComment()}
 	 *
-	 * @param commentCollectionEnabled flag indicating whether or not to enable collection of comments.
-	 * @param includeBlank             flag indicating whether or not to collect blank lines in comments (these will come as {@code null})
+	 * @param commentCollectionEnabled flag indicating whether to enable collection of comments.
+	 * @param includeBlank             flag indicating whether to collect blank lines in comments (these will come as {@code null})
 	 */
 	public void setCommentCollectionEnabled(boolean commentCollectionEnabled, boolean includeBlank) {
 		setCommentCollectionEnabled(commentCollectionEnabled);
@@ -430,7 +430,7 @@ public abstract class CommonParserSettings<F extends Format> extends CommonSetti
 	 *
 	 * Blank comments will come as {@code null}.
 	 *
-	 * @return a flag indicating whether or not to enable collection of blank comments.
+	 * @return a flag indicating whether to enable collection of blank comments.
 	 */
 	public boolean isBlankCommentCollectionEnabled() {
 		return blankCommentCollectionEnabled;

@@ -1,12 +1,12 @@
 /*******************************************************************************
  * Copyright 2014 Univocity Software Pty Ltd
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
+ * <p>
  * http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -64,7 +64,7 @@ public class CsvFormat extends Format {
 	}
 
 	/**
-	 * Identifies whether or not a given character is used for escaping values where the field delimiter is part of the value
+	 * Identifies whether a given character is used for escaping values where the field delimiter is part of the value
 	 *
 	 * @param ch the character to be verified
 	 *
@@ -96,7 +96,7 @@ public class CsvFormat extends Format {
 	}
 
 	/**
-	 * Identifies whether or not a given character is used for escaping quotes inside an already quoted value.
+	 * Identifies whether a given character is used for escaping quotes inside an already quoted value.
 	 *
 	 * @param ch the character to be verified
 	 *
@@ -158,7 +158,7 @@ public class CsvFormat extends Format {
 	}
 
 	/**
-	 * Identifies whether or not a given character represents a field delimiter
+	 * Identifies whether a given character represents a field delimiter
 	 *
 	 * @param ch the character to be verified
 	 *
@@ -172,7 +172,7 @@ public class CsvFormat extends Format {
 	}
 
 	/**
-	 * Identifies whether or not a given character represents a field delimiter
+	 * Identifies whether a given character represents a field delimiter
 	 *
 	 * @param sequence the character sequence to be verified
 	 *
@@ -235,7 +235,7 @@ public class CsvFormat extends Format {
 	}
 
 	/**
-	 * Identifies whether or not a given character is used to escape the character used for escaping quotes defined by {@link #getQuoteEscape()}.
+	 * Identifies whether a given character is used to escape the character used for escaping quotes defined by {@link #getQuoteEscape()}.
 	 *
 	 * @param ch the character to be verified
 	 *
@@ -297,7 +297,7 @@ public class CsvFormat extends Format {
 
 	@Override
 	protected TreeMap<String, Object> getConfiguration() {
-		TreeMap<String, Object> out = new TreeMap<String, Object>();
+		TreeMap<String, Object> out = new TreeMap<>();
 		out.put("Quote character", quote);
 		out.put("Quote escape character", quoteEscape);
 		out.put("Quote escape escape character", charToEscapeQuoteEscaping);

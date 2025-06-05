@@ -179,7 +179,7 @@ public abstract class Format implements Cloneable{
 	}
 
 	/**
-	 * Identifies whether or not a given character represents a comment
+	 * Identifies whether a given character represents a comment
 	 * @param ch the character to be verified
 	 * @return true if the given character is the comment character, false otherwise
 	 */

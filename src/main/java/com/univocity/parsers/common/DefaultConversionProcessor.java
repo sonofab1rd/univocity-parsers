@@ -189,7 +189,7 @@ public abstract class DefaultConversionProcessor implements ConversionProcessor 
 	 * @param headers               All field names used to produce records in a given destination. May be null if no headers have been defined in {@link CommonSettings#getHeaders()}
 	 * @param indexesToWrite        The indexes of the headers that are actually being written. May be null if no fields have been selected using {@link CommonSettings#selectFields(String...)} or {@link CommonSettings#selectIndexes(Integer...)}
 	 *
-	 * @return {@code true} if the the row should be discarded
+	 * @return {@code true} if the row should be discarded
 	 */
 	public final boolean reverseConversions(boolean executeInReverseOrder, Object[] row, NormalizedString[] headers, int[] indexesToWrite) {
 		boolean keepRow = true;
@@ -250,10 +250,10 @@ public abstract class DefaultConversionProcessor implements ConversionProcessor 
 
 	/**
 	 * Handles an error that occurred when applying conversions over a value. If the user defined a
-	 * {@link ProcessorErrorHandler} the user will receive the exception and is able to determine whether or not
+	 * {@link ProcessorErrorHandler} the user will receive the exception and is able to determine whether
 	 * processing should continue, discarding the record. If the error handler is an instance of
 	 * {@link RetryableErrorHandler}, the user can provide a default value to use in place of the one that could not
-	 * be converted, and decide whether or not the record should be kept with the use of the
+	 * be converted, and decide whether the record should be kept with the use of the
 	 * {@link RetryableErrorHandler#keepRecord()} method.
 	 *
 	 * @param ex     the exception that occurred when applying a conversion

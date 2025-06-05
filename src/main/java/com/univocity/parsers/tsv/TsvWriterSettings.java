@@ -77,7 +77,7 @@ public class TsvWriterSettings extends CommonWriterSettings<TsvFormat> {
 	 * of each line with the escape character to indicate the record continues on the next line. For example, '\n' and '\r'
 	 * characters will be written as: {@code '\'+'\n'} and {@code '\'+'\r'}.
 	 *
-	 * @param lineJoiningEnabled a flag indicating whether or not to enable line joining.
+	 * @param lineJoiningEnabled a flag indicating whether to enable line joining.
 	 *
 	 * @return this {@code TsvParserSettings} instance
 	 */
