@@ -1,12 +1,12 @@
 /*******************************************************************************
  * Copyright 2014 Univocity Software Pty Ltd
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
+ * <p>
  * http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -59,7 +59,7 @@ public class CsvWriterSettings extends CommonWriterSettings<CsvFormat> {
 	}
 
 	/**
-	 * Indicates indicates whether or not all written values should be enclosed within quotes (as defined in {@link CsvFormat})
+	 * Indicates indicates whether all written values should be enclosed within quotes (as defined in {@link CsvFormat})
 	 *
 	 * <p> (Defaults to false)
 	 * <p> By default, only values that contain a field separator are enclosed within quotes.
@@ -129,19 +129,19 @@ public class CsvWriterSettings extends CommonWriterSettings<CsvFormat> {
 	}
 
 	/**
-	 * Flag indicating whether the writer should replace the the normalized line separator character specified in {@link Format#getNormalizedNewline()}
+	 * Flag indicating whether the writer should replace the normalized line separator character specified in {@link Format#getNormalizedNewline()}
 	 * by the sequence specified in {@link Format#getLineSeparator()}, when the value is enclosed within quotes.
-	 *
+	 * <p>
 	 * This is enabled by default and is used to ensure data be read on any platform without introducing unwanted blank lines.
-	 *
+	 * <p>
 	 * For example, consider the quoted value {@code "Line1 \n Line2"}. If this is written using {@code "\r\n"} as
 	 * the line separator sequence, and the normalized new line is set to {@code '\n'} (the default), the output will be:
-	 *
+	 * <p>
 	 * {@code [Line1 \r\n Line2]}
 	 *
 	 * However, if the value is meant to be kept untouched, and the original line separator should be maintained, set
 	 * the {@link #normalizeLineEndingsWithinQuotes} to {@code false}. This will make the writer output the value as-is, producing:
-	 *
+	 * <p>
 	 * {@code [Line1 \n Line2]}
 	 *
 	 * @return {@code true} if line separator characters in quoted values should be considered 'normalized' and replaced by the
@@ -152,19 +152,19 @@ public class CsvWriterSettings extends CommonWriterSettings<CsvFormat> {
 	}
 
 	/**
-	 * Flag indicating whether the writer should replace the the normalized line separator character specified in {@link Format#getNormalizedNewline()}
+	 * Flag indicating whether the writer should replace the normalized line separator character specified in {@link Format#getNormalizedNewline()}
 	 * by the sequence specified in {@link Format#getLineSeparator()}, when the value is enclosed within quotes.
-	 *
+	 * <p>
 	 * This is enabled by default and is used to ensure data can be used on any platform without producing unrecognized line endings.
-	 *
+	 * <p>
 	 * For example, consider the quoted value {@code "Line1 \n Line2"}. If this is written using {@code "\r\n"} as
 	 * the line separator sequence, and the normalized new line is set to {@code '\n'} (the default), the output will be:
-	 *
+	 * <p>
 	 * {@code [Line1 \r\n Line2]}
 	 *
 	 * However, if the value is meant to be kept untouched, and the original line separator should be maintained, set
 	 * the {@link #normalizeLineEndingsWithinQuotes} to {@code false}. This will make the writer output the value as-is, producing:
-	 *
+	 * <p>
 	 * {@code [Line1 \n Line2]}
 	 *
 	 * @param normalizeLineEndingsWithinQuotes flag indicating that line separator characters in quoted values should be
@@ -222,21 +222,21 @@ public class CsvWriterSettings extends CommonWriterSettings<CsvFormat> {
 	 * @return {@code true} if the given character is a quotation trigger, {@code false} otherwise.
 	 */
 	public boolean isQuotationTrigger(char ch) {
-		for (int i = 0; i < quotationTriggers.length; i++) {
-			if (quotationTriggers[i] == ch) {
-				return true;
-			}
-		}
+        for (char quotationTrigger : quotationTriggers) {
+            if (quotationTrigger == ch) {
+                return true;
+            }
+        }
 		return false;
 	}
 
 	/**
 	 * Indicates whether the CSV writer should escape values that contain the quote character, by enclosing the entire
 	 * value in quotes.
-	 *
+	 * <p>
 	 * For example, consider a value such as {@code [My "precious" value]}.
 	 * When quote escaping is enabled, the output will be:
-	 *
+	 * <p>
 	 * {@code ["My ""precious"" value"]}
 	 *
 	 * If disabled (the default), the value will be written as-is. Note that the CSV output will not conform to the RFC 4180 standard,
@@ -251,10 +251,10 @@ public class CsvWriterSettings extends CommonWriterSettings<CsvFormat> {
 	/**
 	 * Configures the CSV writer to escape values that contain the quote character, by enclosing the entire
 	 * value in quotes.
-	 *
+	 * <p>
 	 * For example, consider a value such as {@code [My "precious" value]}.
 	 * When quote escaping is enabled, the output will be:
-	 *
+	 * <p>
 	 * {@code ["My ""precious"" value"]}
 	 *
 	 * If disabled (the default), the value will be written as-is. Note that the CSV output will not conform to the RFC 4180 standard,

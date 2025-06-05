@@ -1343,7 +1343,7 @@ public abstract class AbstractParser<T extends CommonParserSettings<?>> {
 	/**
 	 * Provides an {@link IterableResult} for iterating rows parsed from the input.
 	 *
-	 * @param input    the the {@code InputStream} with contents to be parsed
+	 * @param input    the {@code InputStream} with contents to be parsed
 	 * @param encoding the character encoding to be used for processing the given input.
 	 *
 	 * @return an iterator for rows parsed from the input.
@@ -1355,7 +1355,7 @@ public abstract class AbstractParser<T extends CommonParserSettings<?>> {
 	/**
 	 * Provides an {@link IterableResult} for iterating rows parsed from the input.
 	 *
-	 * @param input    the the {@code InputStream} with contents to be parsed
+	 * @param input    the {@code InputStream} with contents to be parsed
 	 * @param encoding the character encoding to be used for processing the given input.
 	 *
 	 * @return an iterator for rows parsed from the input.
@@ -1372,7 +1372,7 @@ public abstract class AbstractParser<T extends CommonParserSettings<?>> {
 	/**
 	 * Provides an {@link IterableResult} for iterating rows parsed from the input.
 	 *
-	 * @param input the the {@code InputStream} with contents to be parsed
+	 * @param input the {@code InputStream} with contents to be parsed
 	 *
 	 * @return an iterator for rows parsed from the input.
 	 */
@@ -1449,7 +1449,7 @@ public abstract class AbstractParser<T extends CommonParserSettings<?>> {
 	/**
 	 * Provides an {@link IterableResult} for iterating records parsed from the input.
 	 *
-	 * @param input    the the {@code InputStream} with contents to be parsed
+	 * @param input    the {@code InputStream} with contents to be parsed
 	 * @param encoding the character encoding to be used for processing the given input.
 	 *
 	 * @return an iterator for records parsed from the input.
@@ -1461,7 +1461,7 @@ public abstract class AbstractParser<T extends CommonParserSettings<?>> {
 	/**
 	 * Provides an {@link IterableResult} for iterating records parsed from the input.
 	 *
-	 * @param input    the the {@code InputStream} with contents to be parsed
+	 * @param input    the {@code InputStream} with contents to be parsed
 	 * @param encoding the character encoding to be used for processing the given input.
 	 *
 	 * @return an iterator for records parsed from the input.
@@ -1478,7 +1478,7 @@ public abstract class AbstractParser<T extends CommonParserSettings<?>> {
 	/**
 	 * Provides an {@link IterableResult} for iterating records parsed from the input.
 	 *
-	 * @param input the the {@code InputStream} with contents to be parsed
+	 * @param input the {@code InputStream} with contents to be parsed
 	 *
 	 * @return an iterator for records parsed from the input.
 	 */

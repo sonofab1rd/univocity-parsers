@@ -43,7 +43,7 @@ import java.util.Map.*;
  * <li><b>ignoreTrailingWhitespaces <i>(defaults to true)</i>:</b> removes trailing whitespaces from values being read/written</li>
  * <li><b>ignoreLeadingWhitespaces <i>(defaults to true)</i>:</b> removes leading whitespaces from values being read/written</li>
  * <li><b>headers <i>(defaults to null)</i>:</b> the field names in the input/output, in the sequence they occur.
- * <p>when reading, the given header names will be used to refer to each column irrespective of whether or not the input contains a header row
+ * <p>when reading, the given header names will be used to refer to each column irrespective of whether the input contains a header row
  * <p>when writing, the given header names will be used to refer to each column and can be used for writing the header row</li>
  * <li><b>field selection <i>(defaults to none)</i>:</b> a selection of fields for reading and writing. Fields can be selected by their name or their position.
  * <p>when reading, the selected fields only will be parsed and the remaining fields will be discarded.
@@ -137,7 +137,7 @@ public abstract class CommonSettings<F extends Format> implements Cloneable {
 	}
 
 	/**
-	 * Returns whether or not empty lines should be ignored (defaults to true)
+	 * Returns whether empty lines should be ignored (defaults to true)
 	 * <p>when reading, if the parser reads a line that is empty, it will be skipped.
 	 * <p>when writing, if the writer receives an empty or null row to write to the output, it will be ignored
 	 *
@@ -148,7 +148,7 @@ public abstract class CommonSettings<F extends Format> implements Cloneable {
 	}
 
 	/**
-	 * Defines whether or not empty lines should be ignored (defaults to true)
+	 * Defines whether empty lines should be ignored (defaults to true)
 	 * <p>when reading, if the parser reads a line that is empty, it will be skipped.
 	 * <p>when writing, if the writer receives an empty or null row to write to the output, it will be ignored
 	 *
@@ -162,7 +162,7 @@ public abstract class CommonSettings<F extends Format> implements Cloneable {
 	}
 
 	/**
-	 * Returns whether or not trailing whitespaces from values being read/written should be skipped  (defaults to true)
+	 * Returns whether trailing whitespaces from values being read/written should be skipped  (defaults to true)
 	 *
 	 * @return true if trailing whitespaces from values being read/written should be skipped, false otherwise
 	 */
@@ -171,7 +171,7 @@ public abstract class CommonSettings<F extends Format> implements Cloneable {
 	}
 
 	/**
-	 * Defines whether or not trailing whitespaces from values being read/written should be skipped  (defaults to true)
+	 * Defines whether trailing whitespaces from values being read/written should be skipped  (defaults to true)
 	 *
 	 * @param ignoreTrailingWhitespaces true if trailing whitespaces from values being read/written should be skipped, false otherwise
 	 *
@@ -183,7 +183,7 @@ public abstract class CommonSettings<F extends Format> implements Cloneable {
 	}
 
 	/**
-	 * Returns whether or not leading whitespaces from values being read/written should be skipped  (defaults to true)
+	 * Returns whether leading whitespaces from values being read/written should be skipped  (defaults to true)
 	 *
 	 * @return true if leading whitespaces from values being read/written should be skipped, false otherwise
 	 */
@@ -192,7 +192,7 @@ public abstract class CommonSettings<F extends Format> implements Cloneable {
 	}
 
 	/**
-	 * Defines whether or not leading whitespaces from values being read/written should be skipped  (defaults to true)
+	 * Defines whether leading whitespaces from values being read/written should be skipped  (defaults to true)
 	 *
 	 * @param ignoreLeadingWhitespaces true if leading whitespaces from values being read/written should be skipped, false otherwise
 	 *
@@ -205,7 +205,7 @@ public abstract class CommonSettings<F extends Format> implements Cloneable {
 
 	/**
 	 * Defines the field names in the input/output, in the sequence they occur (defaults to null).
-	 * <p>when reading, the given header names will be used to refer to each column irrespective of whether or not the input contains a header row
+	 * <p>when reading, the given header names will be used to refer to each column irrespective of whether the input contains a header row
 	 * <p>when writing, the given header names will be used to refer to each column and can be used for writing the header row
 	 *
 	 * @param headers the field name sequence associated with each column in the input/output.
@@ -224,7 +224,7 @@ public abstract class CommonSettings<F extends Format> implements Cloneable {
 
 	/**
 	 * Defines the field names in the input/output derived from a given class with {@link Parsed} annotated attributes/methods.
-	 * <p>when reading, the given header names will be used to refer to each column irrespective of whether or not the input contains a header row
+	 * <p>when reading, the given header names will be used to refer to each column irrespective of whether the input contains a header row
 	 * <p>when writing, the given header names will be used to refer to each column and can be used for writing the header row
 	 *
 	 * @param headerSourceClass the class from which the headers have been derived.
@@ -258,7 +258,7 @@ public abstract class CommonSettings<F extends Format> implements Cloneable {
 
 	/**
 	 * Returns the field names in the input/output, in the sequence they occur (defaults to null).
-	 * <p>when reading, the given header names will be used to refer to each column irrespective of whether or not the input contains a header row
+	 * <p>when reading, the given header names will be used to refer to each column irrespective of whether the input contains a header row
 	 * <p>when writing, the given header names will be used to refer to each column and can be used for writing the header row
 	 *
 	 * @return the field name sequence associated with each column in the input/output.
@@ -568,7 +568,7 @@ public abstract class CommonSettings<F extends Format> implements Cloneable {
 
 
 	/**
-	 * Returns a flag indicating whether or not a {@link ProcessorErrorHandler} has been defined through the use of method {@link #setProcessorErrorHandler(ProcessorErrorHandler)}
+	 * Returns a flag indicating whether a {@link ProcessorErrorHandler} has been defined through the use of method {@link #setProcessorErrorHandler(ProcessorErrorHandler)}
 	 *
 	 * @return {@code true} if the parser/writer is configured to use a {@link ProcessorErrorHandler}
 	 */

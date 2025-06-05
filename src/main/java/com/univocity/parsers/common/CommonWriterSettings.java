@@ -225,7 +225,7 @@ public abstract class CommonWriterSettings<F extends Format> extends CommonSetti
 	 * <p>When disabled, each written record will contain values for all columns, in the order they are sent to the writer. Fields which were not selected will not be written but and the record will contain empty values.
 	 * <p>When enabled, each written record will contain values only for the selected columns. The values will be ordered according to the selection.
 	 *
-	 * @param columnReorderingEnabled the flag indicating whether or not selected fields should be reordered and written by the writer
+	 * @param columnReorderingEnabled the flag indicating whether selected fields should be reordered and written by the writer
 	 */
 	public void setColumnReorderingEnabled(boolean columnReorderingEnabled) {
 		this.columnReorderingEnabled = columnReorderingEnabled;

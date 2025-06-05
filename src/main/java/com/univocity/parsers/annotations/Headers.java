@@ -26,7 +26,7 @@ import java.lang.annotation.*;
  * <p> With this annotation, you can configure the sequence of headers to use when reading/writing:</p>
  *
  * <ul>
- *  <li>when reading, the given {@link #sequence()} of header names will be used to refer to each column, irrespective of whether or not the input contains a header row.
+ *  <li>when reading, the given {@link #sequence()} of header names will be used to refer to each column, irrespective of whether the input contains a header row.
  *  	If empty, and no headers have been defined in {@link CommonSettings#getHeaders()}, the parser will automatically use the first row in the input as the header row,
  *  	unless the fields in the bean have been annotated using {@link Parsed#index()} only.
  *  </li>

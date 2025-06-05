@@ -236,7 +236,7 @@ public class CsvParserExamples extends Example {
 		// converts values at in the "Amount" column (position 1 in the file) to integer.
 		detailProcessor.convertIndexes(Conversions.toInteger()).set(1);
 
-		// 2nd, Create MasterDetailProcessor to identify whether or not a row is the master row.
+		// 2nd, Create MasterDetailProcessor to identify whether a row is the master row.
 		// the row placement argument indicates whether the master detail row occurs before or after a sequence of "detail" rows.
 		MasterDetailListProcessor masterRowProcessor = new MasterDetailListProcessor(RowPlacement.BOTTOM, detailProcessor) {
 			@Override

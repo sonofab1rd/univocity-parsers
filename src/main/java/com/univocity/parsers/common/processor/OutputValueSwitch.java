@@ -167,7 +167,6 @@ public class OutputValueSwitch extends RowWriterProcessorSwitch {
 		return defaultSwitch;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	protected RowWriterProcessor<?> switchRowProcessor(Object row) {
 		selectedSwitch = getSwitch(row);

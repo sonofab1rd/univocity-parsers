@@ -28,9 +28,9 @@ import java.util.*;
  * <p>In addition to the configuration options provided by {@link CommonParserSettings}, the FixedWidthParserSettings include:
  *
  * <ul>
- * <li><b>skipTrailingCharsUntilNewline <i>(defaults to {@code false})</i>:</b> Indicates whether or not any trailing characters beyond the record's length should be skipped until the newline is reached
+ * <li><b>skipTrailingCharsUntilNewline <i>(defaults to {@code false})</i>:</b> Indicates whether any trailing characters beyond the record's length should be skipped until the newline is reached
  * <p>For example, if the record length is 5, but the row contains "12345678\n", then portion containing "678" will be discarded and not considered part of the next record </li>
- * <li><b>recordEndsOnNewline <i>(defaults to {@code false})</i>:</b> Indicates whether or not a record is considered parsed when a newline is reached.
+ * <li><b>recordEndsOnNewline <i>(defaults to {@code false})</i>:</b> Indicates whether a record is considered parsed when a newline is reached.
  * <p>For example, if recordEndsOnNewline is set to true, then given a record of length 4, and the input "12\n3456", the parser will identify [12] and [3456]
  * <p>If recordEndsOnNewline is set to false, then given a record of length 4, and the input "12\n3456", the parser will identify a multi-line record [12\n3] and [456 ]</li>
  * </ul>
@@ -139,7 +139,7 @@ public class FixedWidthParserSettings extends CommonParserSettings<FixedWidthFor
 	}
 
 	/**
-	 * Indicates whether or not any trailing characters beyond the record's length should be skipped until the newline is reached (defaults to {@code false})
+	 * Indicates whether any trailing characters beyond the record's length should be skipped until the newline is reached (defaults to {@code false})
 	 * <p>For example, if the record length is 5, but the row contains "12345678\n", then the portion containing "678\n" will be discarded and not considered part of the next record
 	 *
 	 * @return returns true if any trailing characters beyond the record's length should be skipped until the newline is reached, false otherwise
@@ -149,7 +149,7 @@ public class FixedWidthParserSettings extends CommonParserSettings<FixedWidthFor
 	}
 
 	/**
-	 * Defines whether or not any trailing characters beyond the record's length should be skipped until the newline is reached (defaults to {@code false})
+	 * Defines whether any trailing characters beyond the record's length should be skipped until the newline is reached (defaults to {@code false})
 	 * <p>For example, if the record length is 5, but the row contains "12345678\n", then the portion containing "678\n" will be discarded and not considered part of the next record
 	 *
 	 * @param skipTrailingCharsUntilNewline a flag indicating if any trailing characters beyond the record's length should be skipped until the newline is reached
@@ -159,7 +159,7 @@ public class FixedWidthParserSettings extends CommonParserSettings<FixedWidthFor
 	}
 
 	/**
-	 * Indicates whether or not a record is considered parsed when a newline is reached. Examples:
+	 * Indicates whether a record is considered parsed when a newline is reached. Examples:
 	 * <ul>
 	 * <li>Consider two records of length <b>4</b>, and the input <b>12\n3456</b></li>
 	 * <li>When {@link FixedWidthParserSettings#recordEndsOnNewline} is set to true:  the first value will be read as <b>12</b> and the second <b>3456</b></li>
@@ -174,14 +174,14 @@ public class FixedWidthParserSettings extends CommonParserSettings<FixedWidthFor
 	}
 
 	/**
-	 * Defines whether or not a record is considered parsed when a newline is reached. Examples:
+	 * Defines whether a record is considered parsed when a newline is reached. Examples:
 	 * <ul>
 	 * <li>Consider two records of length <b>4</b>, and the input <b>12\n3456</b></li>
 	 * <li>When {@link FixedWidthParserSettings#recordEndsOnNewline} is set to true:  the first value will be read as <b>12</b> and the second <b>3456</b></li>
 	 * <li>When {@link FixedWidthParserSettings#recordEndsOnNewline} is set to false:  the first value will be read as <b>12\n3</b> and the second <b>456</b></li>
 	 * </ul>
 	 *
-	 * @param recordEndsOnNewline a flag indicating whether or not a record is considered parsed when a newline is reached
+	 * @param recordEndsOnNewline a flag indicating whether a record is considered parsed when a newline is reached
 	 */
 	public void setRecordEndsOnNewline(boolean recordEndsOnNewline) {
 		this.recordEndsOnNewline = recordEndsOnNewline;

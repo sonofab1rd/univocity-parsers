@@ -73,7 +73,7 @@ public class TsvParserSettings extends CommonParserSettings<TsvFormat> {
 	 * It will continue processing the contents found in the next line, until a new line character is found, given it is
 	 * not preceded by another escape character.
 	 *
-	 * @param lineJoiningEnabled a flag indicating whether or not to enable line joining.
+	 * @param lineJoiningEnabled a flag indicating whether to enable line joining.
 	 *
 	 * @return this {@code TsvParserSettings} instance
 	 */
@@ -111,7 +111,7 @@ public class TsvParserSettings extends CommonParserSettings<TsvFormat> {
 	}
 
 	/**
-	 * Defines whether or not empty lines should be ignored (defaults to true)
+	 * Defines whether empty lines should be ignored (defaults to true)
 	 * <p>when reading, if the parser reads a line that is empty, it will be skipped.
 	 * <p>when writing, if the writer receives an empty or null row to write to the output, it will be ignored
 	 *
@@ -125,7 +125,7 @@ public class TsvParserSettings extends CommonParserSettings<TsvFormat> {
 	}
 
 	/**
-	 * Defines whether or not trailing whitespaces from values being read/written should be skipped  (defaults to true)
+	 * Defines whether trailing whitespaces from values being read/written should be skipped  (defaults to true)
 	 *
 	 * @param ignoreTrailingWhitespaces true if trailing whitespaces from values being read/written should be skipped, false otherwise
 	 *
@@ -137,7 +137,7 @@ public class TsvParserSettings extends CommonParserSettings<TsvFormat> {
 	}
 
 	/**
-	 * Defines whether or not leading whitespaces from values being read/written should be skipped  (defaults to true)
+	 * Defines whether leading whitespaces from values being read/written should be skipped  (defaults to true)
 	 *
 	 * @param ignoreLeadingWhitespaces true if leading whitespaces from values being read/written should be skipped, false otherwise
 	 *
@@ -150,7 +150,7 @@ public class TsvParserSettings extends CommonParserSettings<TsvFormat> {
 
 	/**
 	 * Defines the field names in the input/output, in the sequence they occur (defaults to null).
-	 * <p>when reading, the given header names will be used to refer to each column irrespective of whether or not the input contains a header row
+	 * <p>when reading, the given header names will be used to refer to each column irrespective of whether the input contains a header row
 	 * <p>when writing, the given header names will be used to refer to each column and can be used for writing the header row
 	 *
 	 * @param headers the field name sequence associated with each column in the input/output.
@@ -164,7 +164,7 @@ public class TsvParserSettings extends CommonParserSettings<TsvFormat> {
 
 	/**
 	 * Defines the field names in the input/output derived from a given class with {@link Parsed} annotated attributes/methods.
-	 * <p>when reading, the given header names will be used to refer to each column irrespective of whether or not the input contains a header row
+	 * <p>when reading, the given header names will be used to refer to each column irrespective of whether the input contains a header row
 	 * <p>when writing, the given header names will be used to refer to each column and can be used for writing the header row
 	 *
 	 * @param headerSourceClass the class from which the headers have been derived.

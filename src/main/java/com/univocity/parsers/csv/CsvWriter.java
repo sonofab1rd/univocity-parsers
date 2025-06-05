@@ -1,12 +1,12 @@
 /*******************************************************************************
  * Copyright 2014 Univocity Software Pty Ltd
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
+ * <p>
  * http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -181,18 +181,18 @@ public class CsvWriter extends AbstractWriter<CsvWriterSettings> {
 			tmp[triggerCount - 5] = sep[1];
 		}
 
-		for (int i = 0; i < tmp.length; i++) {
-			if (maxTrigger < tmp[i]) {
-				maxTrigger = tmp[i];
-			}
-		}
+        for (char c : tmp) {
+            if (maxTrigger < c) {
+                maxTrigger = c;
+            }
+        }
 		if (maxTrigger != 0) {
 			maxTrigger++;
 			this.quotationTriggers = new boolean[maxTrigger];
 			Arrays.fill(quotationTriggers, false);
-			for (int i = 0; i < tmp.length; i++) {
-				quotationTriggers[tmp[i]] = true;
-			}
+            for (char c : tmp) {
+                quotationTriggers[c] = true;
+            }
 		}
 	}
 
@@ -201,7 +201,7 @@ public class CsvWriter extends AbstractWriter<CsvWriterSettings> {
 		if (recordCount == 0L && quotedFieldSelector != null) {
 			int[] quotedIndexes = quotedFieldSelector.getFieldIndexes(headers);
 			if (quotedIndexes.length > 0) {
-				quotedColumns = new HashSet<Integer>();
+				quotedColumns = new HashSet<>();
 				for (int idx : quotedIndexes) {
 					quotedColumns.add(idx);
 				}

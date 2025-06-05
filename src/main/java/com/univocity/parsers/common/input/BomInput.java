@@ -140,7 +140,7 @@ public final class BomInput extends InputStream {
 	}
 
 	/**
-	 * Returns a flag indicating whether or not all bytes read from the wrapped input stream have been consumed. This
+	 * Returns a flag indicating whether all bytes read from the wrapped input stream have been consumed. This
 	 * allows client code to determine if the original input stream can be used directly and safely, or if this
 	 * {@code BomInput} wrapper class should be used instead.
 	 *

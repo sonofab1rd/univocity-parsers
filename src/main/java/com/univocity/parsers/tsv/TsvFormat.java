@@ -86,7 +86,7 @@ public class TsvFormat extends Format {
 	}
 
 	/**
-	 * Identifies whether or not a given character is used for escaping special characters in TSV (\t, \n, \r and \).
+	 * Identifies whether a given character is used for escaping special characters in TSV (\t, \n, \r and \).
 	 * @param ch the character to be verified
 	 * @return true if the given character is escape character, false otherwise
 	 */

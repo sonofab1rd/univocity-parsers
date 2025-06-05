@@ -195,7 +195,7 @@ public class FieldConversionMapping implements Cloneable {
 	/**
 	 * Applies a sequence of conversions associated with an Object value at a given index in a record.
 	 *
-	 * @param executeInReverseOrder flag to indicate whether or not the conversion sequence must be executed in reverse order
+	 * @param executeInReverseOrder flag to indicate whether the conversion sequence must be executed in reverse order
 	 * @param index                 The index of parsed value in a record
 	 * @param value                 The value in a record
 	 * @param convertedFlags        an array of flags that indicate whether a conversion occurred. Used to determine whether

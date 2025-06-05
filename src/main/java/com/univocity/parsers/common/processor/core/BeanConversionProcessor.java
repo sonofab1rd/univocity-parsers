@@ -292,7 +292,7 @@ public class BeanConversionProcessor<T> extends DefaultConversionProcessor {
 	}
 
 	/**
-	 * Determines whether or not an annotated field should be processed.
+	 * Determines whether an annotated field should be processed.
 	 * Can be overridden by subclasses for fine grained control.
 	 *
 	 * @param field the field to be processed
