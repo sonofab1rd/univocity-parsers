@@ -85,7 +85,6 @@ public final class CsvParser extends AbstractParser<CsvParserSettings> {
         boolean backToDelimiter = quoteHandling == BACK_TO_DELIMITER;
 		parseUnescapedQuotesUntilDelimiter = quoteHandling == STOP_AT_DELIMITER || quoteHandling == SKIP_VALUE || backToDelimiter;
 		parseUnescapedQuotes = quoteHandling != RAISE_ERROR;
-//		}
 	}
 
 

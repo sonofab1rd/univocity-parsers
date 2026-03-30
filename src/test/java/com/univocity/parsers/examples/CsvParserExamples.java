@@ -18,6 +18,7 @@ package com.univocity.parsers.examples;
 import com.univocity.parsers.common.*;
 import com.univocity.parsers.common.processor.*;
 import com.univocity.parsers.common.record.*;
+import com.univocity.parsers.common.record.Record;
 import com.univocity.parsers.conversions.*;
 import com.univocity.parsers.csv.*;
 import org.testng.annotations.*;

@@ -17,6 +17,7 @@ package com.univocity.parsers.issues.github;
 
 
 import com.univocity.parsers.common.record.*;
+import com.univocity.parsers.common.record.Record;
 import com.univocity.parsers.fixed.*;
 import org.testng.*;
 import org.testng.annotations.*;

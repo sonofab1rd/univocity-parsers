@@ -155,6 +155,7 @@
                             <!--suppress UnresolvedMavenProperty -->
                             <javadocExecutable>${env.JAVA_HOME}/bin/javadoc</javadocExecutable>
                             <useStandardDocletOptions>true</useStandardDocletOptions>
+                            <doclint>-missing</doclint>
                         </configuration>
                     </execution>
                 </executions>

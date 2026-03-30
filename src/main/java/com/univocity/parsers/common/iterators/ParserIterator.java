@@ -110,7 +110,7 @@ abstract class ParserIterator<T> implements IterableResult<T, ParsingContext> {
 	}
 
 	/**
-	 * Returns the next record (either a String[] or a {@link Record})
+	 * Returns the next record (either a String[] or a {@link com.univocity.parsers.common.record.Record})
 	 *
 	 * @return the next record if available.
 	 */
