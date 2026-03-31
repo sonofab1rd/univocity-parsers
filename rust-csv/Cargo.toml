@@ -1,0 +1,13 @@
+[package]
+name = "univocity-parsers-rust"
+version = "0.1.0"
+edition = "2021"
+description = "Rust CSV parser with JNI bindings for performance comparison with univocity-parsers"
+
+[lib]
+name = "univocity_parsers_rust"
+crate-type = ["cdylib"]
+
+[dependencies]
+csv = "1.4"
+jni = { version = "0.21", features = ["invocation"] }
