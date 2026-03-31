@@ -43,7 +43,7 @@ import java.lang.annotation.*;
  * to be set for the {@code @Parsed} annotation. This eliminates the need for adding explicit, additional annotations and
  * their specific property values to each and every field.
  *
- * The following class can now make use of the {@code @MyReplacement} annotation to apply the the annotations
+ * The following class can now make use of the {@code @MyReplacement} annotation to apply the annotations
  * {@code @Replace} and {@code @Parsed}, configuring the properties of the "inherited" {@code @Parsed}:
  *
  * <pre>

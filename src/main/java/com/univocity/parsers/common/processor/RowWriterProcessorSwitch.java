@@ -24,7 +24,7 @@ import java.util.Map;
  * A special {@link RowWriterProcessor} implementation that combines and allows switching among different
  * RowWriterProcessors. Concrete implementations of this class
  * are expected to implement the {@code switchRowProcessor(T)} method and analyze the input row
- * to determine whether or not the current {@link RowWriterProcessor} implementation must be changed to handle a special
+ * to determine whether the current {@link RowWriterProcessor} implementation must be changed to handle a special
  * circumstance (determined by the concrete implementation) such as a different row format.
  *
  * When the row writer processor is switched, the {@link #rowProcessorSwitched(RowWriterProcessor, RowWriterProcessor)}
@@ -38,7 +38,7 @@ public abstract class RowWriterProcessorSwitch implements RowWriterProcessor<Obj
 	private String[] previousHeaders;
 
 	/**
-	 * Analyzes an output row to determine whether or not the row writer processor implementation must be changed
+	 * Analyzes an output row to determine whether the row writer processor implementation must be changed
 	 *
 	 * @param row a record with data to be written to the output
 	 *

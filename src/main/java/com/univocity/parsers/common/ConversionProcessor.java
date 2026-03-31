@@ -36,7 +36,6 @@ public interface ConversionProcessor {
 	 *
 	 * @return A {@link FieldSet} for indexes.
 	 */
-	@SuppressWarnings({"unchecked", "rawtypes"})
 	FieldSet<Integer> convertIndexes(Conversion... conversions);
 
 	/**
@@ -44,7 +43,6 @@ public interface ConversionProcessor {
 	 *
 	 * @param conversions The sequence of conversions to be executed in all elements of a record
 	 */
-	@SuppressWarnings({"rawtypes", "unchecked"})
 	void convertAll(Conversion... conversions);
 
 	/**
@@ -60,7 +58,6 @@ public interface ConversionProcessor {
 	 *
 	 * @return A {@link FieldSet} for field names.
 	 */
-	@SuppressWarnings({"unchecked", "rawtypes"})
 	FieldSet<String> convertFields(Conversion... conversions);
 
 	/**

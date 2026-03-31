@@ -25,7 +25,7 @@ import java.util.Map.*;
  * A special {@link Processor} implementation that combines and allows switching among different
  * Processors. Each Processor will have its own {@link Context}. Concrete implementations of this class
  * are expected to implement the {@link #switchRowProcessor(String[], Context)} method and analyze the input row
- * to determine whether or not the current {@link Processor} implementation must be changed to handle a special
+ * to determine whether the current {@link Processor} implementation must be changed to handle a special
  * circumstance (determined by the concrete implementation) such as a different row format.
  *
  * When the processor is switched, the {@link #processorSwitched(Processor, Processor)} will be called, and
@@ -38,7 +38,7 @@ public abstract class AbstractProcessorSwitch<T extends Context> implements Proc
 	private T contextForProcessor;
 
 	/**
-	 * Analyzes the input to determine whether or not the row processor implementation must be changed
+	 * Analyzes the input to determine whether the row processor implementation must be changed
 	 *
 	 * @param row     a row parsed from the input
 	 * @param context the current parsing context (not associated with the current row processor used by this class)

@@ -25,7 +25,7 @@ import java.util.*;
  *
  * A {@link Processor} implementation for associating rows extracted from any implementation of {@link AbstractParser} into {@link MasterDetailRecord} instances.
  *
- * <p> For each row processed, a call to {@link AbstractMasterDetailProcessor#isMasterRecord(String[], Context)} will be made to identify whether or not it is a master row.
+ * <p> For each row processed, a call to {@link AbstractMasterDetailProcessor#isMasterRecord(String[], Context)} will be made to identify whether it is a master row.
  * <p> The detail rows are automatically associated with the master record in an instance of {@link MasterDetailRecord}.
  * <p> When the master record is fully processed (i.e. {@link MasterDetailRecord} contains a master row and  all associated detail rows),
  * it is sent to the user for processing in {@link AbstractMasterDetailProcessor#masterDetailRecordProcessed(MasterDetailRecord, Context)}.
@@ -162,7 +162,7 @@ public abstract class AbstractMasterDetailProcessor<T extends Context> extends A
 	}
 
 	/**
-	 * Queries whether or not the given row is a master record.
+	 * Queries whether the given row is a master record.
 	 * @param row the data extracted by the parser for an individual record.
 	 * @param context A contextual object with information and controls over the current state of the parsing process
 	 * @return true if the row is a master record, false if it is a detail record.

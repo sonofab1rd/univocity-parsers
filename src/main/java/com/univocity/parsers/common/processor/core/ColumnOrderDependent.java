@@ -25,9 +25,9 @@ import com.univocity.parsers.common.processor.*;
 public interface ColumnOrderDependent {
 
 	/**
-	 * Returns a flag indicating whether or not columns should be reordered by the parser
+	 * Returns a flag indicating whether columns should be reordered by the parser
 	 *
-	 * @return a flag indicating whether or not columns should be reordered by the parser
+	 * @return a flag indicating whether columns should be reordered by the parser
 	 */
 	boolean preventColumnReordering();
 }

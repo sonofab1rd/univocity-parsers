@@ -21,6 +21,7 @@ import com.univocity.parsers.annotations.*;
 import com.univocity.parsers.common.*;
 import com.univocity.parsers.common.processor.*;
 import com.univocity.parsers.common.record.*;
+import com.univocity.parsers.common.record.Record;
 import com.univocity.parsers.fixed.*;
 import org.testng.annotations.*;
 

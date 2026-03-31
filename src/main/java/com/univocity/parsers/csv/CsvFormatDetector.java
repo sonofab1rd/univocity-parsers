@@ -1,12 +1,12 @@
 /*******************************************************************************
  * Copyright 2015 Univocity Software Pty Ltd
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
+ * <p>
  * http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -34,7 +34,7 @@ public abstract class CsvFormatDetector implements InputAnalysisProcess {
 	private final char normalizedNewLine;
 	private final int whitespaceRangeStart;
 	private char[] allowedDelimiters;
-	private char[] delimiterPreference;
+	private final char[] delimiterPreference;
 	private final char suggestedQuote;
 	private final char suggestedQuoteEscape;
 
@@ -70,7 +70,7 @@ public abstract class CsvFormatDetector implements InputAnalysisProcess {
 	}
 
 	protected Map<Character, Integer> calculateTotals(List<Map<Character, Integer>> symbolsPerRow) {
-		Map<Character, Integer> out = new HashMap<Character, Integer>();
+		Map<Character, Integer> out = new HashMap<>();
 
 		for (Map<Character, Integer> rowStats : symbolsPerRow) {
 			for (Map.Entry<Character, Integer> symbolStats : rowStats.entrySet()) {
@@ -90,10 +90,10 @@ public abstract class CsvFormatDetector implements InputAnalysisProcess {
 
 	@Override
 	public void execute(char[] characters, int length) {
-		Set<Character> allSymbols = new HashSet<Character>();
-		Map<Character, Integer> symbols = new HashMap<Character, Integer>();
-		Map<Character, Integer> escape = new HashMap<Character, Integer>();
-		List<Map<Character, Integer>> symbolsPerRow = new ArrayList<Map<Character, Integer>>();
+		Set<Character> allSymbols = new HashSet<>();
+		Map<Character, Integer> symbols = new HashMap<>();
+		Map<Character, Integer> escape = new HashMap<>();
+		List<Map<Character, Integer>> symbolsPerRow = new ArrayList<>();
 
 		int doubleQuoteCount = 0;
 		int singleQuoteCount = 0;
@@ -160,17 +160,17 @@ public abstract class CsvFormatDetector implements InputAnalysisProcess {
 			if (isSymbol(ch)) { //counts all symbols. Skips letters and digits
 				allSymbols.add(ch);
 				increment(symbols, ch);
-			} else if ((ch == '\r' || ch == '\n' || ch == normalizedNewLine) && symbols.size() > 0) { //got a newline and collected some symbols? Good!
+			} else if ((ch == '\r' || ch == '\n' || ch == normalizedNewLine) && !symbols.isEmpty()) { //got a newline and collected some symbols? Good!
 				afterNewLine = true;
 				symbolsPerRow.add(symbols);
 				if (symbolsPerRow.size() == MAX_ROW_SAMPLES) {
 					break;
 				}
-				symbols = new HashMap<Character, Integer>();
+				symbols = new HashMap<>();
 			}
 		}
 
-		if (symbols.size() > 0 && length < characters.length) {
+		if (!symbols.isEmpty() && length < characters.length) {
 			symbolsPerRow.add(symbols);
 		}
 
@@ -180,8 +180,8 @@ public abstract class CsvFormatDetector implements InputAnalysisProcess {
 
 		Map<Character, Integer> totals = calculateTotals(symbolsPerRow);
 
-		Map<Character, Integer> sums = new HashMap<Character, Integer>();
-		Set<Character> toRemove = new HashSet<Character>();
+		Map<Character, Integer> sums = new HashMap<>();
+		Set<Character> toRemove = new HashSet<>();
 
 		//combines the number of symbols found in each row and sums the difference.
 		for (Map<Character, Integer> prev : symbolsPerRow) {
@@ -204,7 +204,7 @@ public abstract class CsvFormatDetector implements InputAnalysisProcess {
 		}
 
 		if (toRemove.size() == sums.size()) { //will discard all symbols. Stick with the symbols that showed up more consistently across all rows.
-			Map<Character, Integer> lineCount = new HashMap<Character, Integer>();
+			Map<Character, Integer> lineCount = new HashMap<>();
 			for (i = 0; i < symbolsPerRow.size(); i++) {
 				for (Character symbolInRow : symbolsPerRow.get(i).keySet()) {
 					Integer count = lineCount.get(symbolInRow);
@@ -243,7 +243,7 @@ public abstract class CsvFormatDetector implements InputAnalysisProcess {
 		sums.keySet().removeAll(toRemove);
 
 		if (allowedDelimiters.length > 0) {
-			Set<Character> toRetain = new HashSet<Character>();
+			Set<Character> toRetain = new HashSet<>();
 			for (char c : allowedDelimiters) {
 				toRetain.add(c);
 			}
@@ -343,7 +343,7 @@ public abstract class CsvFormatDetector implements InputAnalysisProcess {
 	 *
 	 * @param map         the map of characters and their numbers
 	 * @param defaultChar the default character to return in case the map is empty
-	 *
+	 * @param totals      the map of characters and their totals
 	 * @return the character with the lowest number associated.
 	 */
 	protected char min(Map<Character, Integer> map, Map<Character, Integer> totals, char defaultChar) {
@@ -355,7 +355,7 @@ public abstract class CsvFormatDetector implements InputAnalysisProcess {
 	 *
 	 * @param map         the map of characters and their numbers
 	 * @param defaultChar the default character to return in case the map is empty
-	 *
+	 * @param totals      the map of characters and their totals
 	 * @return the character with the highest number associated.
 	 */
 	protected char max(Map<Character, Integer> map, Map<Character, Integer> totals, char defaultChar) {
@@ -369,7 +369,7 @@ public abstract class CsvFormatDetector implements InputAnalysisProcess {
 	 * @param defaultChar the default character to return in case the map is empty
 	 * @param min         a flag indicating whether to return the character associated with the lowest number in the map.
 	 *                    If {@code false} then the character associated with the highest number found will be returned.
-	 *
+	 * @param totals      the map of characters and their totals
 	 * @return the character with the highest/lowest number associated.
 	 */
 	protected char getChar(Map<Character, Integer> map, Map<Character, Integer> totals, char defaultChar, boolean min) {

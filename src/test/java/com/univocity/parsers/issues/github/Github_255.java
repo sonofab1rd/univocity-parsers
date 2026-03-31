@@ -19,7 +19,6 @@ package com.univocity.parsers.issues.github;
 
 import com.univocity.parsers.annotations.*;
 import com.univocity.parsers.common.processor.*;
-import com.univocity.parsers.conversions.*;
 import com.univocity.parsers.csv.*;
 import org.testng.annotations.*;
 
@@ -29,7 +28,7 @@ import java.util.*;
 import static org.testng.Assert.*;
 
 /**
- * From: https://github.com/univocity/univocity-parsers/issues/255
+ * From: <a href="https://github.com/univocity/univocity-parsers/issues/255">Github Issue 255</a>
  *
  * @author Univocity Software Pty Ltd - <a href="mailto:dev@univocity.com">dev@univocity.com</a>
  */
@@ -94,15 +93,24 @@ public class Github_255 {
 		}
 
 		public static List<Employee> examples() {
+			Calendar c = Calendar.getInstance();
+			c.set(111+1900, Calendar.JANUARY, 1);
+			Date joinDate = Date.from(c.toInstant());
+			c.set(111+1900, Calendar.DECEMBER, 31);
+			Date exitDate1 = Date.from(c.toInstant());
+			c.set(112+1900, Calendar.JUNE, 30);
+			Date exitDate2 = Date.from(c.toInstant());
+			c.set(111+1900, Calendar.JANUARY, 1);
+			Date exitDate3 = Date.from(c.toInstant());
 			return Arrays.asList(
-					new Employee("E001", "John Doe", "CEO", "Employee", "Full-time", new Date(111, 0, 1), null)
-					, new Employee("E002", "Jane Doe", "CFO", "Employee", "Full-time", new Date(111, 0, 1), null)
-					, new Employee("E003", "James Doe", "CMO", "Employee", "Full-time", new Date(111, 0, 1), null)
-					, new Employee("E004", "Jennifer Doe", "CTO", "Employee", "Full-time", new Date(111, 0, 1), null)
-					, new Employee("E005", "Jason Doe", "Analyst", "Employee", "Full-time", new Date(111, 0, 1), new Date(111, 11, 31))
-					, new Employee("E006", "Joseph Doe", "Analyst", "Employee", "Full-time", new Date(111, 0, 1), null)
-					, new Employee("C001", "Jimmy Doe", "Analyst", "Contractor", "Full-time", new Date(111, 0, 1), new Date(112, 5, 30))
-					, new Employee("B001", "Jillian Doe", "Chairperson", "Board member", "Part-time", new Date(111, 0, 1), null)
+					new Employee("E001", "John Doe", "CEO", "Employee", "Full-time", joinDate, null)
+					, new Employee("E002", "Jane Doe", "CFO", "Employee", "Full-time", joinDate, null)
+					, new Employee("E003", "James Doe", "CMO", "Employee", "Full-time", joinDate, null)
+					, new Employee("E004", "Jennifer Doe", "CTO", "Employee", "Full-time", joinDate, null)
+					, new Employee("E005", "Jason Doe", "Analyst", "Employee", "Full-time", joinDate, exitDate1)
+					, new Employee("E006", "Joseph Doe", "Analyst", "Employee", "Full-time", joinDate, null)
+					, new Employee("C001", "Jimmy Doe", "Analyst", "Contractor", "Full-time", joinDate, exitDate2)
+					, new Employee("B001", "Jillian Doe", "Chairperson", "Board member", "Part-time", exitDate3, null)
 			);
 		}
 	}

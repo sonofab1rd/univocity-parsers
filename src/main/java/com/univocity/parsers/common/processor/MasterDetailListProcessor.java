@@ -32,7 +32,7 @@ import com.univocity.parsers.common.processor.core.*;
  *      }
  * };
  *
- * parserSettings.setRowProcessor(masterRowProcessor);
+ * parserSettings.setProcessor(masterRowProcessor);
  *
  * List&lt;MasterDetailRecord&gt; rows = masterRowProcessor.getRecords();
  * }</pre></blockquote><hr>

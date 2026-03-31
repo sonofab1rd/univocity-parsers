@@ -47,7 +47,7 @@ public class Github_33 {
 
 		parserSettings.getFormat().setDelimiter('|');
 		parserSettings.getFormat().setLineSeparator("\n");
-		parserSettings.setRowProcessor(rowProcessor);
+		parserSettings.setProcessor(rowProcessor);
 
 		parserSettings.setHeaderExtractionEnabled(true);
 

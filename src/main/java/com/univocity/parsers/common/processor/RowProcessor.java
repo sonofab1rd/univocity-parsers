@@ -22,7 +22,7 @@ import com.univocity.parsers.conversions.*;
 /**
  * The essential callback interface to handle records parsed by any parser that extends {@link AbstractParser}.
  *
- * <p>When parsing an input, univocity-parsers will obtain the RowProcessor from {@link CommonParserSettings#getRowProcessor()}, and
+ * <p>When parsing an input, univocity-parsers will obtain the RowProcessor from {@link CommonParserSettings#getProcessor()}, and
  * delegate each parsed row to {@link RowProcessor#rowProcessed(String[], ParsingContext)}.
  *
  * <p>Before parsing the first row, the parser will invoke the {@link RowProcessor#processStarted(ParsingContext)} method.

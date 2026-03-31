@@ -40,7 +40,7 @@ public class Github_3 extends ParserTestCase {
 		BeanListProcessor<TestBean> rowProcessor = new BeanListProcessor<TestBean>(TestBean.class);
 
 		CsvParserSettings parserSettings = new CsvParserSettings();
-		parserSettings.setRowProcessor(rowProcessor);
+		parserSettings.setProcessor(rowProcessor);
 		parserSettings.setHeaderExtractionEnabled(true);
 		parserSettings.getFormat().setLineSeparator("\n");
 

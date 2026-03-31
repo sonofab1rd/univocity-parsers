@@ -1,12 +1,12 @@
 /*******************************************************************************
  * Copyright 2014 Univocity Software Pty Ltd
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
+ * <p>
  * http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -34,10 +34,9 @@ import static com.univocity.parsers.csv.UnescapedQuoteHandling.*;
  */
 public final class CsvParser extends AbstractParser<CsvParserSettings> {
 
-	private boolean parseUnescapedQuotes;
-	private boolean parseUnescapedQuotesUntilDelimiter;
-	private boolean backToDelimiter;
-	private final boolean doNotEscapeUnquotedValues;
+	private final boolean parseUnescapedQuotes;
+	private final boolean parseUnescapedQuotesUntilDelimiter;
+    private final boolean doNotEscapeUnquotedValues;
 	private final boolean keepEscape;
 	private final boolean keepQuotes;
 
@@ -51,7 +50,7 @@ public final class CsvParser extends AbstractParser<CsvParserSettings> {
 	private char newLine;
 	private final DefaultCharAppender whitespaceAppender;
 	private final boolean normalizeLineEndingsInQuotes;
-	private UnescapedQuoteHandling quoteHandling;
+	private final UnescapedQuoteHandling quoteHandling;
 	private final String nullValue;
 	private final int maxColumnLength;
 	private final String emptyValue;
@@ -59,7 +58,7 @@ public final class CsvParser extends AbstractParser<CsvParserSettings> {
 	private final boolean trimQuotedTrailing;
 	private char[] delimiters;
 	private int match = 0;
-	private int formatDetectorRowSampleCount;
+	private final int formatDetectorRowSampleCount;
 
 	/**
 	 * The CsvParser supports all settings provided by {@link CsvParserSettings}, and requires this configuration to be properly initialized.
@@ -68,8 +67,6 @@ public final class CsvParser extends AbstractParser<CsvParserSettings> {
 	 */
 	public CsvParser(CsvParserSettings settings) {
 		super(settings);
-		parseUnescapedQuotes = settings.isParseUnescapedQuotes();
-		parseUnescapedQuotesUntilDelimiter = settings.isParseUnescapedQuotesUntilDelimiter();
 		doNotEscapeUnquotedValues = !settings.isEscapeUnquotedValues();
 		keepEscape = settings.isKeepEscapeSequences();
 		keepQuotes = settings.getKeepQuotes();
@@ -85,26 +82,14 @@ public final class CsvParser extends AbstractParser<CsvParserSettings> {
 		whitespaceAppender = new ExpandingCharAppender(10, "", whitespaceRangeStart);
 
 		this.quoteHandling = settings.getUnescapedQuoteHandling();
-		if (quoteHandling == null) {
-			if (parseUnescapedQuotes) {
-				if (parseUnescapedQuotesUntilDelimiter) {
-					quoteHandling = STOP_AT_DELIMITER;
-				} else {
-					quoteHandling = STOP_AT_CLOSING_QUOTE;
-				}
-			} else {
-				quoteHandling = RAISE_ERROR;
-			}
-		} else {
-			backToDelimiter = quoteHandling == BACK_TO_DELIMITER;
-			parseUnescapedQuotesUntilDelimiter = quoteHandling == STOP_AT_DELIMITER || quoteHandling == SKIP_VALUE || backToDelimiter;
-			parseUnescapedQuotes = quoteHandling != RAISE_ERROR;
-		}
+        boolean backToDelimiter = quoteHandling == BACK_TO_DELIMITER;
+		parseUnescapedQuotesUntilDelimiter = quoteHandling == STOP_AT_DELIMITER || quoteHandling == SKIP_VALUE || backToDelimiter;
+		parseUnescapedQuotes = quoteHandling != RAISE_ERROR;
 	}
 
 
 	@Override
-	protected final void parseRecord() {
+	protected void parseRecord() {
 		if (multiDelimiter == null) {
 			parseSingleDelimiterRecord();
 		} else {
@@ -112,7 +97,7 @@ public final class CsvParser extends AbstractParser<CsvParserSettings> {
 		}
 	}
 
-	private final void parseSingleDelimiterRecord() {
+	private void parseSingleDelimiterRecord() {
 		if (ch <= ' ' && ignoreLeadingWhitespace && whitespaceRangeStart < ch) {
 			ch = input.skipWhitespace(ch, delimiter, quote);
 		}
@@ -133,7 +118,7 @@ public final class CsvParser extends AbstractParser<CsvParserSettings> {
 					if (len == 0) {
 						String value = input.getQuotedString(quote, quoteEscape, escapeEscape, maxColumnLength, delimiter, newLine, keepQuotes, keepEscape, trimQuotedLeading, trimQuotedTrailing);
 						if (value != null) {
-							output.valueParsed(value == "" ? emptyValue : value);
+							output.valueParsed(value.isEmpty() ? emptyValue : value);
 							input.enableNormalizeLineEndings(true);
 							try {
 								ch = input.nextChar();
@@ -176,7 +161,7 @@ public final class CsvParser extends AbstractParser<CsvParserSettings> {
 					output.trim = trimQuotedTrailing;
 					parseQuotedValue();
 					input.enableNormalizeLineEndings(true);
-					if (!(unescaped && quoteHandling == BACK_TO_DELIMITER && output.appender.length() == 0)) {
+					if (!(unescaped && quoteHandling == BACK_TO_DELIMITER && !output.appender.isEmpty())) {
 						output.valueParsed();
 					}
 				} else if (doNotEscapeUnquotedValues) {
@@ -239,7 +224,7 @@ public final class CsvParser extends AbstractParser<CsvParserSettings> {
 				break;
 			case RAISE_ERROR:
 				throw new TextParsingException(context, "Unescaped quote character '" + quote
-						+ "' inside " + (quoted ? "quoted" : "") + " value of CSV field. To allow unescaped quotes, set 'parseUnescapedQuotes' to 'true' in the CSV parser settings. Cannot parse CSV input.");
+						+ "' inside " + (quoted ? "quoted" : "") + " value of CSV field. To allow unescaped quotes, set quoteHandling != RAISE_ERROR in the CSV parser settings. Cannot parse CSV input.");
 		}
 	}
 
@@ -379,7 +364,7 @@ public final class CsvParser extends AbstractParser<CsvParserSettings> {
 			}
 			ch = input.nextChar();
 
-			if (trimQuotedLeading && (ch <= ' ' && ch != quote && ch != quoteEscape) && output.appender.length() == 0) {
+			if (trimQuotedLeading && (ch <= ' ' && ch != quote && ch != quoteEscape) && !output.appender.isEmpty()) {
 				while ((ch = input.nextChar()) <= ' ') ;
 			}
 
@@ -416,7 +401,7 @@ public final class CsvParser extends AbstractParser<CsvParserSettings> {
 				}
 			}
 
-			// handles whitespaces after quoted value: whitespaces are ignored. Content after whitespaces may be parsed if 'parseUnescapedQuotes' is enabled.
+			// handles whitespaces after quoted value: whitespaces are ignored. Content after whitespaces may be parsed if quoteHandling is set to a value other than RAISE_ERROR.
 			if (ch != delimiter && ch != newLine && ch <= ' ' && whitespaceRangeStart < ch) {
 				whitespaceAppender.reset();
 				do {
@@ -444,7 +429,7 @@ public final class CsvParser extends AbstractParser<CsvParserSettings> {
 						output.appender.append(ch);
 					}
 
-					//sets this character as the previous character (may be escaping)
+					//sets this character as the previous character (might be escaping)
 					//calls recursively to keep parsing potentially quoted content
 					prev = ch;
 					parseQuotedValue();
@@ -462,7 +447,7 @@ public final class CsvParser extends AbstractParser<CsvParserSettings> {
 	}
 
 	@Override
-	protected final InputAnalysisProcess getInputAnalysisProcess() {
+	protected InputAnalysisProcess getInputAnalysisProcess() {
 		if (settings.isDelimiterDetectionEnabled() || settings.isQuoteDetectionEnabled()) {
 			return new CsvFormatDetector(formatDetectorRowSampleCount, settings, whitespaceRangeStart) {
 				@Override
@@ -490,11 +475,11 @@ public final class CsvParser extends AbstractParser<CsvParserSettings> {
 	 * <li>{@link CsvParserSettings#isQuoteDetectionEnabled()}</li>
 	 * </ul>
 	 *
-	 * The detected format will be available once the parsing process is initialized (i.e. when {@link AbstractParser#beginParsing(Reader) runs}.
+	 * The detected format will be available once the parsing process is initialized i.e. when {@link AbstractParser#beginParsing(Reader) runs}.
 	 *
 	 * @return the detected CSV format, or {@code null} if no detection has been enabled or if the parsing process has not been started yet.
 	 */
-	public final CsvFormat getDetectedFormat() {
+	public CsvFormat getDetectedFormat() {
 		CsvFormat out = null;
 		if (settings.isDelimiterDetectionEnabled()) {
 			out = settings.getFormat().clone();
@@ -513,7 +498,7 @@ public final class CsvParser extends AbstractParser<CsvParserSettings> {
 	}
 
 	@Override
-	protected final boolean consumeValueOnEOF() {
+	protected boolean consumeValueOnEOF() {
 		if (ch == quote) {
 			if (prev == quote) {
 				if (keepQuotes) {
@@ -540,7 +525,7 @@ public final class CsvParser extends AbstractParser<CsvParserSettings> {
 	 *
 	 * @param format the new format to use.
 	 */
-	public final void updateFormat(CsvFormat format) {
+	public void updateFormat(CsvFormat format) {
 		newLine = format.getNormalizedNewline();
 		multiDelimiter = format.getDelimiterString().toCharArray();
 		if (multiDelimiter.length == 1) {
@@ -631,12 +616,12 @@ public final class CsvParser extends AbstractParser<CsvParserSettings> {
 			} else {
 				unescaped = false;
 				prev = '\0';
-				if (ch == quote && output.appender.length() == 0) {
+				if (ch == quote && !output.appender.isEmpty()) {
 					input.enableNormalizeLineEndings(normalizeLineEndingsInQuotes);
 					output.trim = trimQuotedTrailing;
 					parseQuotedValueMultiDelimiter();
 					input.enableNormalizeLineEndings(true);
-					if (!(unescaped && quoteHandling == BACK_TO_DELIMITER && output.appender.length() == 0)) {
+					if (!(unescaped && quoteHandling == BACK_TO_DELIMITER && !output.appender.isEmpty())) {
 						output.valueParsed();
 					}
 				} else if (doNotEscapeUnquotedValues) {
@@ -697,7 +682,7 @@ public final class CsvParser extends AbstractParser<CsvParserSettings> {
 			}
 			ch = input.nextChar();
 
-			if (trimQuotedLeading && ch <= ' ' && output.appender.length() == 0) {
+			if (trimQuotedLeading && ch <= ' ' && !output.appender.isEmpty()) {
 				while ((ch = input.nextChar()) <= ' ') ;
 			}
 
@@ -741,7 +726,7 @@ public final class CsvParser extends AbstractParser<CsvParserSettings> {
 			}
 		}
 
-		// handles whitespaces after quoted value: whitespaces are ignored. Content after whitespaces may be parsed if 'parseUnescapedQuotes' is enabled.
+		// handles whitespaces after quoted value: whitespaces are ignored. Content after whitespaces may be parsed if quoteHandling is set to a value other than RAISE_ERROR.
 		if (ch != newLine && ch <= ' ' && whitespaceRangeStart < ch && !matchDelimiterAfterQuote()) {
 			whitespaceAppender.reset();
 			do {
@@ -772,7 +757,7 @@ public final class CsvParser extends AbstractParser<CsvParserSettings> {
 					output.appender.append(ch);
 				}
 
-				//sets this character as the previous character (may be escaping)
+				//sets this character as the previous character (might be escaping)
 				//calls recursively to keep parsing potentially quoted content
 				prev = ch;
 				parseQuotedValue();

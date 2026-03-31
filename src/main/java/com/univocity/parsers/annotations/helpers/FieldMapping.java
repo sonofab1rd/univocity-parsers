@@ -1,12 +1,12 @@
 /*******************************************************************************
  * Copyright 2014 Univocity Software Pty Ltd
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
+ * <p>
  * http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -254,12 +254,25 @@ public class FieldMapping {
 		if (!accessible) {
 			if (target instanceof Field) {
 				final Field field = ((Field) target);
-				if (!field.isAccessible()) {
+				field.setAccessible(true);
+			} else if (target instanceof Method) {
+				final Method method = (Method) target;
+				method.setAccessible(true);
+			}
+			accessible = true;
+		}
+	}
+
+	private void setAccessible(Object instance) {
+		if (!accessible) {
+			if (target instanceof Field) {
+				final Field field = ((Field) target);
+				if (!field.canAccess(instance)) {
 					field.setAccessible(true);
 				}
 			} else if (target instanceof Method) {
 				final Method method = (Method) target;
-				if (!method.isAccessible()) {
+				if (!method.canAccess(instance)) {
 					method.setAccessible(true);
 				}
 			}

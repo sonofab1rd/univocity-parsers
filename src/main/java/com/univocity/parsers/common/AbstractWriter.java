@@ -1577,6 +1577,8 @@ public abstract class AbstractWriter<S extends CommonWriterSettings<?>> implemen
 	 *
 	 * @param row the information of a single record to be written to a {@code String}.
 	 *
+	 * @param <T> the generic type assignment for the row parameter
+	 *
 	 * @return a formatted {@code String} containing the information of the given record
 	 */
 	public final <T extends Record> String writeRecordToString(T row) {

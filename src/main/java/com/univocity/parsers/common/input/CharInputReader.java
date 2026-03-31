@@ -147,7 +147,7 @@ public interface CharInputReader extends CharInput {
 	 *
 	 * @param ch        the current character to be considered. If equal to the stop character the {@code nullValue} will be returned
 	 * @param stop      the stop character that identifies the end of the content to be collected
-	 * @param trim      flag indicating whether or not trailing whitespaces should be discarded
+	 * @param trim      flag indicating whether trailing whitespaces should be discarded
 	 * @param nullValue value to return when the length of the content to be returned is {@code 0}.
 	 * @param maxLength the maximum length of the {@code String} to be returned. If the length exceeds this limit, {@code null} will be returned
 	 *

@@ -1,12 +1,12 @@
 /*******************************************************************************
  * Copyright 2016 Univocity Software Pty Ltd
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
+ * <p>
  * http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -14,6 +14,8 @@
  * limitations under the License.
  ******************************************************************************/
 package com.univocity.parsers.csv;
+
+import static com.univocity.parsers.csv.UnescapedQuoteHandling.RAISE_ERROR;
 
 /**
  * This class provides default configurations using CSV formats commonly used for parsing/writing.
@@ -31,7 +33,7 @@ public class Csv {
 		CsvParserSettings settings = new CsvParserSettings();
 		settings.getFormat().setLineSeparator("\r\n");
 		settings.getFormat().setComment('\0');
-		settings.setParseUnescapedQuotes(false);
+		settings.setUnescapedQuoteHandling(RAISE_ERROR);
 
 		settings.setSkipEmptyLines(false);
 		settings.trimValues(false);

@@ -19,12 +19,14 @@ import com.univocity.parsers.*;
 import com.univocity.parsers.common.*;
 import com.univocity.parsers.common.processor.*;
 import com.univocity.parsers.common.record.*;
+import com.univocity.parsers.common.record.Record;
 import org.testng.annotations.*;
 
 import java.io.*;
 import java.util.*;
 import java.util.concurrent.*;
 
+import static com.univocity.parsers.csv.UnescapedQuoteHandling.*;
 import static org.testng.Assert.*;
 
 public class CsvParserTest extends ParserTestCase {
@@ -66,7 +68,7 @@ public class CsvParserTest extends ParserTestCase {
 	public void parseIgnoringWhitespaces(String csvFile, char[] lineSeparator) throws Exception {
 		CsvParserSettings settings = newCsvInputSettings(lineSeparator);
 		settings.setCommentCollectionEnabled(true);
-		settings.setRowProcessor(processor);
+		settings.setProcessor(processor);
 		settings.setHeaderExtractionEnabled(true);
 		settings.setIgnoreLeadingWhitespaces(true);
 		settings.setIgnoreTrailingWhitespaces(true);
@@ -117,7 +119,7 @@ public class CsvParserTest extends ParserTestCase {
 	@Test(enabled = true, dataProvider = "csvProvider")
 	public void parseUsingWhitespaces(String csvFile, char[] lineSeparator) throws Exception {
 		CsvParserSettings settings = newCsvInputSettings(lineSeparator);
-		settings.setRowProcessor(processor);
+		settings.setProcessor(processor);
 		settings.setHeaderExtractionEnabled(true);
 		settings.setNullValue("?????");
 		settings.setEmptyValue("XXXXX");
@@ -154,7 +156,7 @@ public class CsvParserTest extends ParserTestCase {
 	@Test(enabled = true, dataProvider = "csvProvider")
 	public void parseColumns(String csvFile, char[] lineSeparator) throws Exception {
 		CsvParserSettings settings = newCsvInputSettings(lineSeparator);
-		settings.setRowProcessor(processor);
+		settings.setProcessor(processor);
 		settings.setHeaderExtractionEnabled(true);
 		settings.setIgnoreLeadingWhitespaces(true);
 		settings.setIgnoreTrailingWhitespaces(true);
@@ -258,7 +260,7 @@ public class CsvParserTest extends ParserTestCase {
 	@Test(enabled = true, dataProvider = "csvProvider")
 	public void parseOneByOne(String csvFile, char[] lineSeparator) throws Exception {
 		CsvParserSettings settings = newCsvInputSettings(lineSeparator);
-		settings.setRowProcessor(processor);
+		settings.setProcessor(processor);
 		settings.setHeaderExtractionEnabled(true);
 		settings.setIgnoreLeadingWhitespaces(true);
 		settings.setIgnoreTrailingWhitespaces(true);
@@ -314,7 +316,7 @@ public class CsvParserTest extends ParserTestCase {
 	@Test(enabled = true, dataProvider = "csvProvider")
 	public void parse3Records(String csvFile, char[] lineSeparator) throws Exception {
 		CsvParserSettings settings = newCsvInputSettings(lineSeparator);
-		settings.setRowProcessor(processor);
+		settings.setProcessor(processor);
 		settings.setHeaderExtractionEnabled(true);
 		settings.setIgnoreLeadingWhitespaces(true);
 		settings.setIgnoreTrailingWhitespaces(true);
@@ -337,7 +339,7 @@ public class CsvParserTest extends ParserTestCase {
 	@Test
 	public void parseBrokenQuoteEscape() {
 		CsvParserSettings settings = newCsvInputSettings(new char[]{'\n'});
-		settings.setParseUnescapedQuotesUntilDelimiter(false);
+		settings.setUnescapedQuoteHandling(UnescapedQuoteHandling.STOP_AT_CLOSING_QUOTE);
 		settings.setHeaderExtractionEnabled(false);
 		CsvParser parser = new CsvParser(settings);
 
@@ -439,8 +441,8 @@ public class CsvParserTest extends ParserTestCase {
 	@Test
 	public void shouldNotAllowParseUnescapedQuotes() throws UnsupportedEncodingException {
 		CsvParserSettings settings = newCsvInputSettings(getLineSeparator());
-		settings.setRowProcessor(new RowListProcessor()); //Default used by CsvParserTest skip 2 lines
-		settings.setParseUnescapedQuotes(false); //To force exception
+		settings.setProcessor(new RowListProcessor()); //Default used by CsvParserTest skip 2 lines
+		settings.setUnescapedQuoteHandling(RAISE_ERROR);
 
 		CsvParser parser = new CsvParser(settings);
 		try {
@@ -455,9 +457,8 @@ public class CsvParserTest extends ParserTestCase {
 	public void parseQuotedStringFollowedByBlankSpace() throws UnsupportedEncodingException {
 		RowListProcessor processor = new RowListProcessor();
 		CsvParserSettings settings = newCsvInputSettings(getLineSeparator());
-		settings.setRowProcessor(processor); //Default used by CsvParserTest skip 2 lines
-		settings.setParseUnescapedQuotes(true);
-		settings.setParseUnescapedQuotesUntilDelimiter(false);
+		settings.setProcessor(processor); //Default used by CsvParserTest skip 2 lines
+		settings.setUnescapedQuoteHandling(STOP_AT_CLOSING_QUOTE);
 
 		CsvParser parser = new CsvParser(settings);
 		parser.parse(new StringReader("1997,\"TV 29\" LED\"\n"));
@@ -474,7 +475,7 @@ public class CsvParserTest extends ParserTestCase {
 	@Test(dataProvider = "testProvider")
 	public void shouldNotAllowUnexpectedCharacterAfterQuotedValue(String csvFile, char[] lineSeparator) throws UnsupportedEncodingException {
 		CsvParserSettings settings = newCsvInputSettings(lineSeparator);
-		settings.setParseUnescapedQuotes(false);
+		settings.setUnescapedQuoteHandling(RAISE_ERROR);
 
 		CsvParser parser = new CsvParser(settings);
 		try {
@@ -490,7 +491,7 @@ public class CsvParserTest extends ParserTestCase {
 	public void parseValueProcessingEscapeNotIgnoringWhitespace() {
 		RowListProcessor processor = new RowListProcessor();
 		CsvParserSettings settings = newCsvInputSettings(getLineSeparator());
-		settings.setRowProcessor(processor); //Default used by CsvParserTest skip 2 lines
+		settings.setProcessor(processor); //Default used by CsvParserTest skip 2 lines
 		settings.setKeepEscapeSequences(true);
 		settings.setIgnoreTrailingWhitespaces(false);
 		settings.setEscapeUnquotedValues(true);
@@ -515,7 +516,7 @@ public class CsvParserTest extends ParserTestCase {
 	public void parseValueProcessingEscapeNotIgnoringWhitespacePrevQuoteEscape2() {
 		RowListProcessor processor = new RowListProcessor();
 		CsvParserSettings settings = newCsvInputSettings(getLineSeparator());
-		settings.setRowProcessor(processor); //Default used by CsvParserTest skip 2 lines
+		settings.setProcessor(processor); //Default used by CsvParserTest skip 2 lines
 		settings.setKeepEscapeSequences(true);
 		settings.setIgnoreTrailingWhitespaces(false);
 		settings.setEscapeUnquotedValues(true);
@@ -540,7 +541,7 @@ public class CsvParserTest extends ParserTestCase {
 	public void parseValueProcessingEscapeNotIgnoringWhitespacePrevQuoteEscape() {
 		RowListProcessor processor = new RowListProcessor();
 		CsvParserSettings settings = newCsvInputSettings(getLineSeparator());
-		settings.setRowProcessor(processor); //Default used by CsvParserTest skip 2 lines
+		settings.setProcessor(processor); //Default used by CsvParserTest skip 2 lines
 		settings.setKeepEscapeSequences(true);
 		settings.setIgnoreTrailingWhitespaces(false);
 		settings.setEscapeUnquotedValues(true);
@@ -602,7 +603,7 @@ public class CsvParserTest extends ParserTestCase {
 	@Test
 	public void testParseUnescapedQuotesWithStop() {
 		CsvParserSettings settings = new CsvParserSettings();
-		settings.setParseUnescapedQuotesUntilDelimiter(true);
+		settings.setUnescapedQuoteHandling(STOP_AT_DELIMITER);
 		settings.getFormat().setLineSeparator("\n");
 
 		CsvParser parser = new CsvParser(settings);
@@ -884,7 +885,7 @@ public class CsvParserTest extends ParserTestCase {
 	public void parseDisablingCommentLineCheck(String csvFile, char[] lineSeparator) throws Exception {
 		CsvParserSettings settings = newCsvInputSettings(lineSeparator);
 		settings.setCommentCollectionEnabled(true);
-		settings.setRowProcessor(processor);
+		settings.setProcessor(processor);
 		settings.setCommentProcessingEnabled(false);
 		settings.setHeaderExtractionEnabled(true);
 		settings.setIgnoreLeadingWhitespaces(true);

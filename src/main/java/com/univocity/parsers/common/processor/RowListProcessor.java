@@ -27,7 +27,7 @@ import java.util.*;
  *
  * <hr><blockquote><pre>
  *
- * parserSettings.setRowProcessor(new RowListProcessor());
+ * parserSettings.setProcessor(new RowListProcessor());
  * parser.parse(reader); // will invoke the {@link RowListProcessor#rowProcessed(String[], ParsingContext)} method for each parsed record.
  *
  * String[] headers = rowProcessor.getHeaders();

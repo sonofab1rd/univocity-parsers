@@ -119,9 +119,7 @@ public class EnumConversion<T extends Enum<T>> extends ObjectConversion<T> {
 
 			try {
 				field = enumType.getDeclaredField(customEnumElement);
-				if (!field.isAccessible()) {
-					field.setAccessible(true);
-				}
+				field.setAccessible(true);
 			} catch (Throwable e) {
 				fieldError = new IllegalStateException("Unable to access custom field '" + customEnumElement + "' in enumeration type " + enumType.getName(), e);
 			}
@@ -139,9 +137,7 @@ public class EnumConversion<T extends Enum<T>> extends ObjectConversion<T> {
 							throw new IllegalArgumentException("Custom method '" + customEnumElement + "' in enumeration type " + enumType.getName() + " must return " + enumType.getName());
 						}
 					}
-					if (!method.isAccessible()) {
-						method.setAccessible(true);
-					}
+					method.setAccessible(true);
 				} catch (Throwable e) {
 					methodError = new IllegalStateException("Unable to access custom method '" + customEnumElement + "' in enumeration type " + enumType.getName(), e);
 				}

@@ -71,7 +71,7 @@ public class Github_48 {
 
 		CsvParserSettings settings = new CsvParserSettings();
 		settings.getFormat().setLineSeparator("\n");
-		settings.setRowProcessor(processor);
+		settings.setProcessor(processor);
 
 		test.configure(settings);
 

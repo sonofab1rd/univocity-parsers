@@ -37,7 +37,7 @@ public class Github_62 {
 		settings.setNumberOfRecordsToRead(0);
 		settings.setCommentCollectionEnabled(true);
 		settings.setHeaderExtractionEnabled(true);
-		settings.setRowProcessor(processor);
+		settings.setProcessor(processor);
 
 		TsvParser parser = new TsvParser(settings);
 

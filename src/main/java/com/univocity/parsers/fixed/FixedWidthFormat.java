@@ -55,7 +55,7 @@ public class FixedWidthFormat extends Format {
 	}
 
 	/**
-	 * Identifies whether or not a given character represents a padding character
+	 * Identifies whether a given character represents a padding character
 	 *
 	 * @param padding the character to be verified
 	 *

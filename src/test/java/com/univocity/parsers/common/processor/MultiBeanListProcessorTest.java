@@ -79,7 +79,7 @@ public class MultiBeanListProcessorTest extends AnnotatedBeanProcessorTest{
 		processor.convertAll(Conversions.toNull("", "?"));
 
 		CsvParserSettings settings = newCsvInputSettings();
-		settings.setRowProcessorErrorHandler(new RowProcessorErrorHandler() {
+		settings.setProcessorErrorHandler(new RowProcessorErrorHandler() {
 			@Override
 			public void handleError(DataProcessingException error, Object[] inputRow, ParsingContext context) {
 				assertEquals(context.currentRecord(), 2L);
@@ -90,7 +90,7 @@ public class MultiBeanListProcessorTest extends AnnotatedBeanProcessorTest{
 		StringReader reader = new StringReader(input);
 		settings.setHeaderExtractionEnabled(true);
 		settings.getFormat().setLineSeparator("\n");
-		settings.setRowProcessor(processor);
+		settings.setProcessor(processor);
 
 		CsvParser parser = new CsvParser(settings);
 		parser.parse(reader);

@@ -20,6 +20,7 @@ import com.univocity.parsers.csv.*;
 import org.testng.annotations.*;
 import org.w3c.dom.*;
 
+import static com.univocity.parsers.csv.UnescapedQuoteHandling.RAISE_ERROR;
 import static org.testng.Assert.*;
 
 /**
@@ -53,7 +54,7 @@ public class Github_18 {
 		result = parser.parseLine("A,B,C");
 		assertEquals(result, new String[]{"A", "B", "C"});
 
-		parserSettings.setParseUnescapedQuotes(false);
+		parserSettings.setUnescapedQuoteHandling(RAISE_ERROR);
 		parser = new CsvParser(parserSettings);
 
 		result = parser.parseLine("|||\"thing");

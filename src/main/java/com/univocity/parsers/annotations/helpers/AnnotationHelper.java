@@ -303,7 +303,7 @@ public class AnnotationHelper {
 		} catch (NoSuchMethodException e) {
 			if (args.length == 0) {
 				try {
-					return type.newInstance();
+					return type.getDeclaredConstructor().newInstance();
 				} catch (Exception ex) {
 					throw new DataProcessingException("Unexpected error instantiating custom " + parent.getSimpleName() + " class '" + type.getSimpleName() + "' (" + type.getName() + ')', e);
 				}

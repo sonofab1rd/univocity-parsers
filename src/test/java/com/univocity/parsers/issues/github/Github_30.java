@@ -52,15 +52,15 @@ public class Github_30 {
 		CsvParserSettings parserSettings = new CsvParserSettings();
 		parserSettings.getFormat().setLineSeparator("\n");
 		BeanListProcessor<AB> beanProcessor = new BeanListProcessor<AB>(AB.class);
-		parserSettings.setRowProcessor(beanProcessor);
+		parserSettings.setProcessor(beanProcessor);
 
 		CsvParser parser = new CsvParser(parserSettings);
 		parser.parse(new StringReader("1,2\n3,4"));
 
 		List<AB> beans = beanProcessor.getBeans();
-		assertEquals(beans.get(0).a, new Long(1));
+		assertEquals(beans.get(0).a, Long.valueOf(1));
 		assertEquals(beans.get(0).b, 2L);
-		assertEquals(beans.get(1).a, new Long(3));
+		assertEquals(beans.get(1).a, Long.valueOf(3));
 		assertEquals(beans.get(1).b, 4L);
 
 	}
