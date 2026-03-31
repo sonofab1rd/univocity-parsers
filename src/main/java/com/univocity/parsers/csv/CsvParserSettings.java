@@ -323,8 +323,8 @@ public class CsvParserSettings extends CommonParserSettings<CsvFormat> {
 	 * @return this {@code CsvParserSettings} instance
 	 */
 	public CsvParserSettings setUnescapedQuoteHandling(UnescapedQuoteHandling unescapedQuoteHandling) {
-		if (unescapedQuoteHandling == null ) {
-			unescapedQuoteHandling =  STOP_AT_DELIMITER;
+		if (unescapedQuoteHandling == null) {
+			unescapedQuoteHandling = STOP_AT_DELIMITER;
 		}
 		this.unescapedQuoteHandling = unescapedQuoteHandling;
 		return this;
