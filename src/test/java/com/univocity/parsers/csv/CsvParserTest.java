@@ -937,4 +937,58 @@ public class CsvParserTest extends ParserTestCase {
 		assertEquals(row[2], "field\u0012 t\u0012ext");
 		assertEquals(row[3], "field\u0012 t\u0012ext");
 	}
+
+	@DataProvider
+	public Object[][] quotedBlankFirstRows() {
+		return new Object[][]{{" "}, {"  "}};
+	}
+
+	@Test(dataProvider = "quotedBlankFirstRows")
+	public void parseQuotedBlankFirstRowWithTrailingTrimming(String value) {
+		CsvParserSettings settings = new CsvParserSettings();
+		settings.setReadInputOnSeparateThread(false);
+		settings.setIgnoreLeadingWhitespaces(false);
+		settings.setIgnoreTrailingWhitespaces(true);
+		settings.setIgnoreLeadingWhitespacesInQuotes(false);
+		settings.setIgnoreTrailingWhitespacesInQuotes(false);
+		settings.setHeaderExtractionEnabled(false);
+		CsvParser parser = new CsvParser(settings);
+		try {
+			List<String[]> rows = parser.parseAll(new StringReader("\"" + value + "\"\n"));
+			assertEquals(rows.size(), 1);
+			assertEquals(rows.get(0), new String[]{value});
+		} finally {
+			parser.stopParsing();
+		}
+	}
+
+	@DataProvider
+	public Object[][] singleCharacterHeaders() {
+		return new Object[][]{
+				{"a,b", false, false},
+				{" a, b", true, false},
+				{"a ,b ", false, true},
+				{" a , b ", true, true}
+		};
+	}
+
+	@Test(dataProvider = "singleCharacterHeaders")
+	public void parseSingleCharacterHeadersWithoutChangingQuotedData(String headers, boolean left, boolean right) {
+		CsvParserSettings settings = new CsvParserSettings();
+		settings.setReadInputOnSeparateThread(false);
+		settings.setIgnoreLeadingWhitespaces(left);
+		settings.setIgnoreTrailingWhitespaces(right);
+		settings.setIgnoreLeadingWhitespacesInQuotes(false);
+		settings.setIgnoreTrailingWhitespacesInQuotes(false);
+		settings.setHeaderExtractionEnabled(true);
+		CsvParser parser = new CsvParser(settings);
+		try {
+			List<String[]> rows = parser.parseAll(new StringReader(headers + "\n\" 1 \",\" 2 \"\n"));
+			assertEquals(parser.getContext().headers(), new String[]{"a", "b"});
+			assertEquals(rows.size(), 1);
+			assertEquals(rows.get(0), new String[]{" 1 ", " 2 "});
+		} finally {
+			parser.stopParsing();
+		}
+	}
 }

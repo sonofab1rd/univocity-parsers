@@ -598,11 +598,11 @@ public class ArgumentUtils {
 			end = input.length() - 1;
 		}
 
-		while (right && input.charAt(end) <= ' ') {
+		while (right && end >= begin && input.charAt(end) <= ' ') {
 			end--;
 		}
 
-		if (begin == end) {
+		if (begin > end) {
 			return "";
 		}
 
